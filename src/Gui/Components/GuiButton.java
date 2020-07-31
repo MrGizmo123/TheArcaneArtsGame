@@ -57,8 +57,6 @@ public class GuiButton extends Gui{
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
 		
-		textOffset = new Vector2f(0,0);
-		
 		this.text = new Text(t, scale,GameResourcesAndSettings.GAME_FONT, new Vector2f(), true);
 		positionText();
 		
@@ -116,8 +114,6 @@ public class GuiButton extends Gui{
 		
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
-		
-		textOffset = new Vector2f(0,0);
 		
 		this.text = new Text("", 1, GameResourcesAndSettings.GAME_FONT, new Vector2f(), false);
 	}
@@ -191,7 +187,7 @@ public class GuiButton extends Gui{
 	public void hide()
 	{
 		this.parentLayout.removeGui(this);
-		super.removeText(text);
+		this.removeText(text);
 	}
 	
 }

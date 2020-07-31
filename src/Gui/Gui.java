@@ -31,7 +31,9 @@ public class Gui {
 	private boolean hasFocus;
 
 	private List<Text> texts;
-	
+
+	private boolean isFocusable;
+
 	// default settings
 	public Gui(int texture, GuiLayout layout)
 	{
@@ -47,7 +49,19 @@ public class Gui {
 		recalculateAABB();
 		hasFocus = false;
 
-		texts = new ArrayList<Text>();
+		isFocusable = true;
+
+		texts = new ArrayList<>();
+	}
+
+	public void setFocusable(boolean focusable)
+	{
+		this.isFocusable = focusable;
+	}
+
+	public boolean isFocusable()
+	{
+		return isFocusable;
 	}
 
 	protected void addText(Text t)
@@ -78,29 +92,32 @@ public class Gui {
 	
 	public void loseFocus()
 	{
-		hasFocus = false;
-		focusLost();
+		if(isFocusable) {
+			hasFocus = false;
+			focusLost();
+		}
 	}
 	
 	public void setFocus()
 	{
-		hasFocus = true;
-		focusGained();
+		if(isFocusable) {
+			hasFocus = true;
+			focusGained();
+		}
 	}
 	
 	public boolean checkFocus()
 	{
-		Vector2f mousePos = new Vector2f(Mouse.getX(),Mouse.getY());
-		if(Input.isMouseButtonPressed(0))
-		{
-			if (boundingBox.isIntersecting(mousePos) && !hasFocus) {
-				setFocus();
-				return true;
-			}
-			else
-			{
-				loseFocus();
-				return false;
+		if(isFocusable) {
+			Vector2f mousePos = new Vector2f(Mouse.getX(), Mouse.getY());
+			if (Input.isMouseButtonPressed(0)) {
+				if (boundingBox.isIntersecting(mousePos) && !hasFocus) {
+					setFocus();
+					return true;
+				} else {
+					loseFocus();
+					return false;
+				}
 			}
 		}
 		return false;

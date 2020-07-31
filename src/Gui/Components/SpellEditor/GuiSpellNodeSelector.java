@@ -31,7 +31,7 @@ public class GuiSpellNodeSelector extends Gui{
 	public GuiSpellNodeSelector(GuiLayout layout, GuiSpellGrid g)
 	{
 		super(GameResourcesAndSettings.GUI_GREY, layout);
-		nodeTypes = new ArrayList<GuiButton>();
+		nodeTypes = new ArrayList<>();
 		grid = g;
 		
 		createGuis();
@@ -42,7 +42,14 @@ public class GuiSpellNodeSelector extends Gui{
 	{
 		hide();
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+
+		//System.out.println(this.parentLayout.getGuis().contains(this));
+	}
+
 	public void show(Vector2f pos)
 	{
 		super.show();
@@ -55,19 +62,13 @@ public class GuiSpellNodeSelector extends Gui{
 	@Override
 	public void hide()
 	{
-		
+		this.parentLayout.removeGui(this);
+
+		//System.out.println(this.parentLayout.getGuis().contains(this));
 		
 		for(GuiButton g : nodeTypes)
 		{
 			g.hide();
-		}
-		
-		super.hide();
-		
-		if(super.parentLayout instanceof SpellProgrammingMenu)
-		{
-			SpellProgrammingMenu menu = (SpellProgrammingMenu) super.parentLayout;
-			menu.setBackgroundAsFocus();
 		}
 	}
 	
@@ -83,8 +84,6 @@ public class GuiSpellNodeSelector extends Gui{
 		this.addXPosConstraint(new AbsolutePositionConstraint((int) pos.x));
 		this.addYPosConstraint(new AbsolutePositionConstraint((int) center));
 		
-		this.show();
-		
 		int i = 0;
 		for(GuiButton g : nodeTypes)
 		{
@@ -98,7 +97,7 @@ public class GuiSpellNodeSelector extends Gui{
 	
 	private void createGuis()
 	{
-		List<SpellNodeType> types = new ArrayList<SpellNodeType>(Arrays.asList(SpellNodeType.values()));
+		List<SpellNodeType> types = new ArrayList<>(Arrays.asList(SpellNodeType.values()));
 		
 		// constants required to get scale of guis
 		int maxStringLength = getMaxNodeNameLength(types);
@@ -115,7 +114,9 @@ public class GuiSpellNodeSelector extends Gui{
 		// scale constraints for selector bg gui
 		this.addScaleConstraint(new ScaleConstraint(bgWidth, ScaleConstraint.WIDTH));
 		this.addAspectConstraint(new AspectConstraint(bgWidth/bgHeight * DisplayManager.aspectRatio));
-		
+
+		this.setFocusable(false);
+
 		for(SpellNodeType type : types) 
 		{
 			GuiButton b = new GuiButton(type.name(), TEXT_SIZE, GameResourcesAndSettings.GUI_DARK_GREY, super.parentLayout);
@@ -133,6 +134,8 @@ public class GuiSpellNodeSelector extends Gui{
 				}
 				
 			});
+
+			b.setFocusable(false);
 			
 			nodeTypes.add(b);
 		}

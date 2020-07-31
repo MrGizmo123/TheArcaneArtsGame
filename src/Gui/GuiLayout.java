@@ -2,6 +2,7 @@ package Gui;
 
 import java.util.*;
 
+import Gui.Components.SpellEditor.GuiSpellNodeSelector;
 import Gui.TextRendering.Text;
 
 public abstract class GuiLayout {
@@ -15,10 +16,10 @@ public abstract class GuiLayout {
 	
 	public GuiLayout()
 	{
-		guis = new ArrayList<Gui>();
+		guis = new ArrayList<>();
 		
-		guisToBeAdded = new ArrayList<Gui>();
-		guisToBeRemoved = new ArrayList<Gui>();
+		guisToBeAdded = new ArrayList<>();
+		guisToBeRemoved = new ArrayList<>();
 		
 		focusedGui = null;
 	}
@@ -77,15 +78,8 @@ public abstract class GuiLayout {
 
 	private void updateGuiList()
 	{
-		for(Gui g : guisToBeAdded)
-		{
-			guis.add(g);
-		}
-
-		for(Gui g : guisToBeRemoved)
-		{
-			guis.remove(g);
-		}
+		guis.addAll(guisToBeAdded);
+		guis.removeAll(guisToBeRemoved);
 
 		guisToBeAdded.clear();
 		guisToBeRemoved.clear();
