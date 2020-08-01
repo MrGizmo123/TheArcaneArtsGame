@@ -29,7 +29,8 @@ public class SpellProgrammingMenu extends GuiLayout{
 		bg = new Gui(GameResourcesAndSettings.GUI_DARK_GREY, this);
 		bg.addScaleConstraint(new ScaleConstraint(1f, ScaleConstraint.WIDTH));
 		bg.addAspectConstraint(new AspectConstraint(1));
-		
+		bg.setShowFocusStatus(false);
+
 		bg.show();
 		
 		grid = new GuiSpellGrid(this);
@@ -63,6 +64,11 @@ public class SpellProgrammingMenu extends GuiLayout{
 			{
 				GuiSpellConnector c = this.selectedConnector;
 				this.selectedConnector = new GuiSpellConnector(mousePos, mousePos, c.getType(), c.getWidth(), this, c.getInputNodePointer());
+			}
+
+			if(Mouse.isButtonDown(1))
+			{
+				removeCurrentConnector();
 			}
 		}
 	}
