@@ -1,5 +1,7 @@
 package Gui.Components.SpellEditor;
 
+import Game.tools.Input;
+import Gui.Components.Draggable;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
@@ -15,7 +17,7 @@ import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
 import Gui.Layouts.SpellProgrammingMenu;
 
-public class GuiSpellNode extends GuiButton{
+public class GuiSpellNode extends GuiButton implements Draggable {
 
 	private static final float width = 0.075f;
 	
@@ -31,7 +33,19 @@ public class GuiSpellNode extends GuiButton{
 		
 		createGuis(parentLayout);
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+
+		if(super.isPressed())
+		{
+			Vector2f mousePos = Input.getMousePosition();
+
+			//dragged((int)mousePos.x, (int)mousePos.y);
+		}
+	}
+
 	private void createGuis(GuiLayout parentLayout)
 	{
 		this.addScaleConstraint(new ScaleConstraint(width, ScaleConstraint.WIDTH));
@@ -160,5 +174,11 @@ public class GuiSpellNode extends GuiButton{
 	{
 		return type;
 	}
-	
+
+	@Override
+	public void dragged(int mouseX, int mouseY) {
+		System.out.println("X: " + mouseX + " Y: " + mouseY);
+		super.addXPosConstraint(new AbsolutePositionConstraint(mouseX));
+		super.addYPosConstraint(new AbsolutePositionConstraint(mouseY));
+	}
 }

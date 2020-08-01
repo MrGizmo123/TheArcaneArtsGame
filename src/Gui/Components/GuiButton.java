@@ -20,6 +20,8 @@ public class GuiButton extends Gui implements Clickable{
 	private int hover_texture;
 	
 	private Vector2f textOffset;
+
+	private boolean isPressed = false;
 	
 	public GuiButton(String t, float scale, GuiLayout parentLayout) 
 	{
@@ -111,7 +113,14 @@ public class GuiButton extends Gui implements Clickable{
 			super.texture = hover_texture;
 			if (Input.isMouseButtonPressed(0)) {
 				clicked();
+				isPressed = true;
 			}
+			else{
+				isPressed = false;
+			}
+		}
+		else {
+			isPressed = false;
 		}
 	}
 	
@@ -144,6 +153,11 @@ public class GuiButton extends Gui implements Clickable{
 		
 		return new AABB(x1, y1, x2, y2);
 		
+	}
+
+	public boolean isPressed()
+	{
+		return isPressed;
 	}
 	
 	@Override
