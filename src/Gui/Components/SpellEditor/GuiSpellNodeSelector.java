@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Gui.Components.Draggable;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -18,7 +19,7 @@ import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
 
-public class GuiSpellNodeSelector extends Gui{
+public class GuiSpellNodeSelector extends Gui {
 
 	private static final float TEXT_SIZE = 0.3f;
 	private static final int padding = 10;
@@ -148,5 +149,5 @@ public class GuiSpellNodeSelector extends Gui{
 		}
 		return maxStringLength;
 	}
-	
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
 
 public class Input {
 	
@@ -84,6 +85,16 @@ public class Input {
 	public static boolean isMouseButtonReleased(int button)
 	{
 		return mouseReleased[button];
+	}
+
+	public static boolean mouseMoved()
+	{
+		return ((Mouse.getDX() != 0) || (Mouse.getDY() != 0));
+	}
+
+	public static Vector2f getMousePosition()
+	{
+		return new Vector2f(Mouse.getX(), Mouse.getY());
 	}
 	
 	public static boolean isKeyPressed(char key)
