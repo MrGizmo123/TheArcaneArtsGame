@@ -4,12 +4,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
-import Game.Render.DisplayManager;
 import Game.Spell.SpellDataType;
 import Game.Spell.SpellNodeType;
 import Game.tools.GameResourcesAndSettings;
 import Gui.GuiLayout;
-import Gui.Components.ClickListener;
+import Gui.Components.Clickable;
 import Gui.Components.GuiButton;
 import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
@@ -82,72 +81,68 @@ public class GuiSpellNode extends GuiButton{
 	
 	private void addInput(Vector2f cursor, SpellDataType typeOfPort, int index)
 	{
-		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout);
+		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout) {
+			@Override
+			public void clicked() {
+
+				if(parentLayout instanceof SpellProgrammingMenu)
+				{
+					SpellProgrammingMenu menu = (SpellProgrammingMenu) parentLayout;
+
+					if(menu.isConnectorSelected())
+					{
+						menu.setSelectedConnectorP2(this.getPositionInViewPort());
+						menu.setSelectedConnectorOutput(pointer, index);
+						menu.setSelectedConnector(null);
+					}
+				}
+
+			}
+		};
+
+
 		g.addXPosConstraint(new AbsolutePositionConstraint((int) cursor.x));
 		g.addYPosConstraint(new AbsolutePositionConstraint((int) cursor.y));
 		g.addScaleConstraint(new ScaleConstraint(0.01f, ScaleConstraint.WIDTH));
 		g.addAspectConstraint(new AspectConstraint(1.77f));
 		
 		g.show();
-		
-		g.setClickListener(new ClickListener() {
-
-			@Override
-			public void clicked() {
-				
-				if(parentLayout instanceof SpellProgrammingMenu)
-				{
-					SpellProgrammingMenu menu = (SpellProgrammingMenu) parentLayout;
-					
-					if(menu.isConnectorSelected())
-					{
-						menu.setSelectedConnectorP2(g.getPositionInViewPort());
-						menu.setSelectedConnectorOutput(pointer, index);
-						menu.setSelectedConnector(null);
-					}
-				}
-				
-			}
-			
-		});
 	}
 	
 	private void addOutput(Vector2f cursor, SpellDataType typeOfPort)
 	{
-		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout);
-		g.addXPosConstraint(new AbsolutePositionConstraint((int) cursor.x));
-		g.addYPosConstraint(new AbsolutePositionConstraint((int) cursor.y));
-		g.addScaleConstraint(new ScaleConstraint(0.01f, ScaleConstraint.WIDTH));
-		g.addAspectConstraint(new AspectConstraint(1.77f));
-		
-		g.setClickListener(new ClickListener() {
-
+		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout) {
 			@Override
 			public void clicked() {
-				
+
 				if(parentLayout instanceof SpellProgrammingMenu)
 				{
 					SpellProgrammingMenu menu = (SpellProgrammingMenu) parentLayout;
-					
+
 					if(menu.isConnectorSelected())
 					{
 						menu.removeCurrentConnector();
 						menu.setSelectedConnector(null);
 						return;
 					}
-					
-					menu.setSelectedConnector(new GuiSpellConnector(g.getPositionInViewPort(),
-											  new Vector2f(Mouse.getX(), Mouse.getY()),
-											  typeOfPort,
-											  10,
-											  parentLayout,
-											  pointer));
+
+					menu.setSelectedConnector(new GuiSpellConnector(this.getPositionInViewPort(),
+							new Vector2f(Mouse.getX(), Mouse.getY()),
+							typeOfPort,
+							10,
+							parentLayout,
+							pointer));
 				}
-				
+
 			}
-			
-		});
-		
+		};
+
+
+		g.addXPosConstraint(new AbsolutePositionConstraint((int) cursor.x));
+		g.addYPosConstraint(new AbsolutePositionConstraint((int) cursor.y));
+		g.addScaleConstraint(new ScaleConstraint(0.01f, ScaleConstraint.WIDTH));
+		g.addAspectConstraint(new AspectConstraint(1.77f));
+
 		g.show();
 	}
 	

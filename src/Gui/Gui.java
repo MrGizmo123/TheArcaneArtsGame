@@ -33,6 +33,7 @@ public class Gui {
 	private List<Text> texts;
 
 	private boolean isFocusable;
+	private boolean showFocusStatus;
 
 	// default settings
 	public Gui(int texture, GuiLayout layout)
@@ -50,8 +51,19 @@ public class Gui {
 		hasFocus = false;
 
 		isFocusable = true;
+		showFocusStatus = true;
 
 		texts = new ArrayList<>();
+	}
+
+	public void setShowFocusStatus(boolean show)
+	{
+		this.showFocusStatus = show;
+	}
+
+	public boolean isShowFocusStatus()
+	{
+		return showFocusStatus;
 	}
 
 	public void setFocusable(boolean focusable)

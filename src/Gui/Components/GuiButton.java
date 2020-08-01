@@ -10,13 +10,11 @@ import Game.tools.utils.AABB;
 import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.TextRendering.Text;
-import Gui.TextRendering.TextMeshData;
 
-public class GuiButton extends Gui{
+public class GuiButton extends Gui implements Clickable{
 
 	private AABB boundingBox;
 	private Text text;
-	private ClickListener listener;
 	
 	private int normal_texture;
 	private int hover_texture;
@@ -27,10 +25,6 @@ public class GuiButton extends Gui{
 	{
 		super(GameResourcesAndSettings.GUI_GREY, parentLayout);
 		this.boundingBox = calculateAABB();
-		this.listener = new ClickListener() {
-			@Override
-			public void clicked() {}
-		};
 		
 		normal_texture = GameResourcesAndSettings.GUI_GREY;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
@@ -49,11 +43,6 @@ public class GuiButton extends Gui{
 		this.boundingBox = calculateAABB();
 		this.textOffset = textOffset;
 		
-		this.listener = new ClickListener() {
-			@Override
-			public void clicked() {}
-		};
-		
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
 		
@@ -67,10 +56,6 @@ public class GuiButton extends Gui{
 	{
 		super(texture, parentLayout);
 		this.boundingBox = calculateAABB();
-		this.listener = new ClickListener() {
-			@Override
-			public void clicked() {}
-		};
 		
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
@@ -88,11 +73,6 @@ public class GuiButton extends Gui{
 		super(texture, parentLayout);
 		this.boundingBox = calculateAABB();
 		
-		this.listener = new ClickListener() {
-			@Override
-			public void clicked() {}
-		};
-		
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
 		
@@ -106,11 +86,6 @@ public class GuiButton extends Gui{
 		super(texture, parentLayout);
 		this.boundingBox = calculateAABB();
 		this.textOffset = textOffset;
-		
-		this.listener = new ClickListener() {
-			@Override
-			public void clicked() {}
-		};
 		
 		normal_texture = texture;
 		hover_texture = GameResourcesAndSettings.GUI_LIGHT_GREY;
@@ -135,7 +110,7 @@ public class GuiButton extends Gui{
 		{
 			super.texture = hover_texture;
 			if (Input.isMouseButtonPressed(0)) {
-				listener.clicked();
+				clicked();
 			}
 		}
 	}
@@ -145,7 +120,7 @@ public class GuiButton extends Gui{
 		Vector2f viewport = super.getPositionInViewPort();
 		Vector2f translatedPos = Vector2f.add(viewport, textOffset, null);
 		
-		text.changePos(new Vector2f(translatedPos.x, translatedPos.y + ((float)GameResourcesAndSettings.GAME_FONT.getMaxHeight() * text.getSize() * Display.getHeight() / Display.getWidth())));
+		text.changePos(new Vector2f(translatedPos.x, translatedPos.y + (GameResourcesAndSettings.GAME_FONT.getMaxHeight() * text.getSize() * Display.getHeight() / Display.getWidth())));
 	}
 	
 	private void recalculateAABB()
@@ -171,11 +146,6 @@ public class GuiButton extends Gui{
 		
 	}
 	
-	public void setClickListener(ClickListener l)
-	{
-		this.listener = l;
-	}
-	
 	@Override
 	public void show()
 	{
@@ -189,5 +159,9 @@ public class GuiButton extends Gui{
 		this.parentLayout.removeGui(this);
 		this.removeText(text);
 	}
-	
+
+	@Override
+	public void clicked() {
+
+	}
 }

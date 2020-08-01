@@ -23,7 +23,7 @@ public class GuiSpellGrid {
 	
 	public GuiSpellGrid(GuiLayout l)
 	{
-		nodes = new HashMap<Integer, GuiSpellNode>();
+		nodes = new HashMap<>();
 		currentPtr = 0;
 		this.parent = l;
 	}
@@ -45,9 +45,7 @@ public class GuiSpellGrid {
 	{
 		Class<? extends GuiSpellNode> typeClass = type.getTypeClass();
 		Constructor<?> c = typeClass.getConstructors()[0];
-		
-		
-		
+
 		GuiSpellNode node = null;
 		try {
 			node = (GuiSpellNode) c.newInstance(currentPtr, parent);

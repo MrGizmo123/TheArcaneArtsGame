@@ -1,6 +1,6 @@
 package Gui.Components;
 
-public interface ClickListener {
+public interface Clickable {
 
 	public void clicked();
 	

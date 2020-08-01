@@ -42,13 +42,11 @@ public abstract class GuiLayout {
 	
 	public void update()
 	{
-		updateLayout(); // function used by subclasses for doing their updates
-
 		updateGuis(); // calles update() fuction of all guis
-
-		checkGuiFocus(); // checks which gui has focus and 
-		
+		checkGuiFocus(); // checks which gui has focus and
 		updateGuiList();
+
+		updateLayout(); // function used by subclasses for doing their updates
 	}
 
 	private void updateGuis()
@@ -67,8 +65,7 @@ public abstract class GuiLayout {
 		{
 			if(g.checkFocus())
 			{
-				focusedGui.loseFocus();
-				focusedGui = g;
+				setFocusedGui(g);
 				break;
 			}
 		}

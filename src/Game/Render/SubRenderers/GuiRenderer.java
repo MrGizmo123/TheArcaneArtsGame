@@ -37,7 +37,7 @@ public class GuiRenderer {
 		shader.loadTransMatrix(Maths.createTransMatrix(g.getPositionInNDC(), g.getScale()));
 		
 		shader.loadAspectRatio(g.getAspect());
-		shader.isSelected(g.hasFocus());
+		shader.isSelected(g.hasFocus() && g.isShowFocusStatus());
 	}
 	
 	private void prepare()

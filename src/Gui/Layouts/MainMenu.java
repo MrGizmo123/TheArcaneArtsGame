@@ -6,11 +6,9 @@ import Game.Game;
 
 import Gui.GuiLayout;
 import Gui.GuiManager;
-import Gui.Components.ClickListener;
+import Gui.Components.Clickable;
 import Gui.Components.GuiButton;
 import Gui.Components.GuiLabel;
-import Gui.Components.GuiTextField;
-import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.RelativePositionConstraint;
 import Gui.Constraints.ScaleConstraint;
@@ -23,31 +21,25 @@ public class MainMenu extends GuiLayout{
 		
 		GuiLabel title = new GuiLabel("The Arcane Arts!", 1f, this);
 		title.addYPosConstraint(new RelativePositionConstraint(0.833f, RelativePositionConstraint.HEIGHT));
-		
-		GuiButton play = new GuiButton("Play", 0.75f, this);
-		
-		play.setClickListener(new ClickListener() {
 
+		title.setFocusable(false);
+
+		GuiButton play = new GuiButton("Play", 0.75f, this) {
 			@Override
 			public void clicked() {
 				GuiManager.loadPlayingLayout();
 			}
-			
-		});
+		};
 		
 		play.addScaleConstraint(new ScaleConstraint(0.2f, ScaleConstraint.WIDTH));
 		play.addAspectConstraint(new AspectConstraint(1.77f));
 		
-		GuiButton quit = new GuiButton("Quit", 0.75f, this) ;
-		
-		quit.setClickListener(new ClickListener() {
-
+		GuiButton quit = new GuiButton("Quit", 0.75f, this) {
 			@Override
 			public void clicked() {
-				System.exit(0);
+				GuiManager.loadPlayingLayout();
 			}
-			
-		});
+		};
 		
 		quit.addScaleConstraint(new ScaleConstraint(0.2f, ScaleConstraint.WIDTH));
 		quit.addAspectConstraint(new AspectConstraint(1.77f));

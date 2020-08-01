@@ -12,12 +12,11 @@ import Game.Spell.SpellNodeType;
 import Game.tools.GameResourcesAndSettings;
 import Gui.Gui;
 import Gui.GuiLayout;
-import Gui.Components.ClickListener;
+import Gui.Components.Clickable;
 import Gui.Components.GuiButton;
 import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
-import Gui.Layouts.SpellProgrammingMenu;
 
 public class GuiSpellNodeSelector extends Gui{
 
@@ -115,25 +114,21 @@ public class GuiSpellNodeSelector extends Gui{
 		this.addScaleConstraint(new ScaleConstraint(bgWidth, ScaleConstraint.WIDTH));
 		this.addAspectConstraint(new AspectConstraint(bgWidth/bgHeight * DisplayManager.aspectRatio));
 
-		this.setFocusable(false);
+		this.setShowFocusStatus(false);
 
 		for(SpellNodeType type : types) 
 		{
-			GuiButton b = new GuiButton(type.name(), TEXT_SIZE, GameResourcesAndSettings.GUI_DARK_GREY, super.parentLayout);
-			b.addScaleConstraint(new ScaleConstraint(buttonWidth, ScaleConstraint.WIDTH));
-			b.addAspectConstraint(new AspectConstraint(buttonAspect));
-			
-			b.hide();
-			
-			b.setClickListener(new ClickListener() {
-
+			GuiButton b = new GuiButton(type.name(), TEXT_SIZE, GameResourcesAndSettings.GUI_DARK_GREY, super.parentLayout) {
 				@Override
 				public void clicked() {
 					grid.addNode(type);
 					hide();
 				}
-				
-			});
+			};
+			b.addScaleConstraint(new ScaleConstraint(buttonWidth, ScaleConstraint.WIDTH));
+			b.addAspectConstraint(new AspectConstraint(buttonAspect));
+			
+			b.hide();
 
 			b.setFocusable(false);
 			
