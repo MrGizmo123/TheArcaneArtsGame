@@ -27,19 +27,19 @@ public class GuiSpellConnector {
 	private int outputNode; // pointer to the output node (index in list)
 	
 	private SpellDataType type;
-	private GuiLayout parent;
+	private Gui parent;
 	
-	public GuiSpellConnector(Vector2f p1, Vector2f p2, SpellDataType t, int width, GuiLayout parentLayout, int inputNodePtr)
+	public GuiSpellConnector(Vector2f p1, Vector2f p2, SpellDataType t, int width, Gui parent, int inputNodePtr)
 	{
 		this.p1 = p1;
 		this.p2 = p2;
 		this.width = width;
-		this.parent = parentLayout;
+		this.parent = parent;
 		this.type = t;
 		
-		s1 = new Gui(t.getTexture(), parentLayout);
-		s2 = new Gui(t.getTexture(), parentLayout);
-		s3 = new Gui(t.getTexture(), parentLayout);
+		s1 = new Gui(t.getTexture(), parent);
+		s2 = new Gui(t.getTexture(), parent);
+		s3 = new Gui(t.getTexture(), parent);
 		generateGuis();
 		
 		s1.show();

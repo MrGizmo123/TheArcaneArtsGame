@@ -7,7 +7,7 @@ public class AABB {
 	private Vector2f p1;
 	private Vector2f p2;
 	
-	public AABB(int x1, int y1, int x2, int y2)
+	public AABB(float x1, float y1, float x2, float y2)
 	{
 		p1 = new Vector2f(x1, y1);
 		p2 = new Vector2f(x2, y2);

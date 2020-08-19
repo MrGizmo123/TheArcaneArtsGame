@@ -11,7 +11,7 @@ import Gui.TextRendering.Text;
 
 public class GuiManager {
 
-	private static GuiLayout activeLayout;
+	private static Gui activeLayout;
 	
 	private static MainMenu mainMenu;
 	private static PlayingMenu playingMenu;
@@ -32,11 +32,6 @@ public class GuiManager {
 		activeLayout.update();
 	}
 	
-	public static List<Gui> getActiveGuis()
-	{
-		return activeLayout.getGuis();
-	}
-	
 	//change functions
 	
 	public static void loadPlayingLayout()
@@ -55,6 +50,11 @@ public class GuiManager {
 	{
 		activeLayout = mainMenu;
 		Game.freezeGameInput();
+	}
+
+	public static Gui getActiveLayout()
+	{
+		return activeLayout;
 	}
 	
 }

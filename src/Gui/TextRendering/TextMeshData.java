@@ -33,7 +33,7 @@ public class TextMeshData {
 		this.isCentered = centered;
 		this.size = size;
 		this.font = f;
-		this.cursor = new Vector2f(0, Display.getHeight() / size);
+		this.cursor = new Vector2f(0, 0);
 		
 		//cursor.y+=(GameResourcesAndSettings.LINE_HEIGHT * size * Display.getHeight());
 		
@@ -118,7 +118,7 @@ public class TextMeshData {
 	
 	public void updateMesh(String text, float size, Font f)
 	{
-		this.cursor = new Vector2f(50, Display.getHeight() / size);
+		this.cursor = new Vector2f(0, 0);
 		
 		vertexPositions = new ArrayList<Float>();
 		textureCoords = new ArrayList<Float>();
@@ -275,9 +275,9 @@ public class TextMeshData {
 	private void addVertex(Vector2f vertex)
 	{
 		Vector2f ndc = Maths.viewportToNDC(vertex);
-		
-		vertexPositions.add(ndc.x);
-		vertexPositions.add(ndc.y);
+		System.out.println(ndc);
+		vertexPositions.add(vertex.x / 1000);
+		vertexPositions.add(vertex.y / 1000);
 		vertexPositions.add(0f);
 	}
 	

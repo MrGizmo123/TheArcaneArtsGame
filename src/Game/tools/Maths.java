@@ -96,6 +96,29 @@ public class Maths {
 		float NDCy = ((viewport.y / Display.getHeight()) * 2) - 1;
 		return new Vector2f(NDCx,NDCy);
 	}
+
+	public static Vector2f normalisedToNDC(Vector2f normalised)
+	{
+		float NDCx = (normalised.x * 2) - 1;
+		float NDCy = (normalised.y * 2) - 1;
+		return new Vector2f(NDCx, NDCy);
+	}
+
+	public static Vector2f viewportToNormalised(Vector2f viewport)
+	{
+		float x = viewport.x / Display.getWidth();
+		float y = viewport.y / Display.getHeight();
+
+		return new Vector2f(x,y);
+	}
+
+	public static Vector2f normalisedToViewport(Vector2f normalised)
+	{
+		float x = normalised.x * Display.getWidth();
+		float y = normalised.y * Display.getHeight();
+
+		return new Vector2f(x, y);
+	}
 	
 	public static float distance(Vector2f a,Vector2f b){
 		 return (float) Math.sqrt(((b.x - a.x) * (b.x - a.x)) + ((b.y - a.y) * (b.y - a.y)));

@@ -2,6 +2,10 @@ package Gui.Constraints;
 
 public abstract class PositionConstraint {
 
-	public abstract int getPos();
+	/**
+	 *
+	 * @return returns the position in normalised coordinates
+	 */
+	public abstract float getPos();
 	
 }

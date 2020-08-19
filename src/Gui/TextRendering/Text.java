@@ -37,7 +37,7 @@ public class Text {
 	
 	public Vector2f getPosNDC()
 	{
-		return Maths.viewportToNDC(pos);
+		return Maths.normalisedToNDC(pos);
 	}
 	
 	public void append(String extra)

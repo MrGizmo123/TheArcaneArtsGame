@@ -2,17 +2,18 @@ package Gui.Constraints;
 
 public class AbsolutePositionConstraint extends PositionConstraint{
 	
-	private int offset;
+	private float val;
 	
 	//takes in the absolute value of offset
-	public AbsolutePositionConstraint(int value)
+	public AbsolutePositionConstraint(float value)
 	{
-		this.offset = value;
+		this.val = value;
 	}
 
 	//gives the offset in pixels
-	public int getPos() {
-		return offset;
+	@Override
+	public float getPos() {
+		return val;
 	}
 
 }

@@ -96,6 +96,11 @@ public class Input {
 	{
 		return new Vector2f(Mouse.getX(), Mouse.getY());
 	}
+
+	public static Vector2f getNormalisedMousePosition()
+	{
+		return Maths.viewportToNormalised(new Vector2f(Mouse.getX(), Mouse.getY()));
+	}
 	
 	public static boolean isKeyPressed(char key)
 	{

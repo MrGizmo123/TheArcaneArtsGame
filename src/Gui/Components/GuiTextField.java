@@ -14,8 +14,8 @@ public class GuiTextField extends Gui{
 
 	private Text text;
 	
-	public GuiTextField(float textSize, boolean centered, GuiLayout parentLayout) {
-		super(GameResourcesAndSettings.GUI_DARK_GREY, parentLayout);
+	public GuiTextField(float textSize, boolean centered, Gui parent) {
+		super(GameResourcesAndSettings.GUI_DARK_GREY, parent);
 		
 		Vector2f viewport = super.getPositionInViewPort();
 		

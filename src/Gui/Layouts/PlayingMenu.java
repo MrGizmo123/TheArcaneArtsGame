@@ -1,20 +1,21 @@
 package Gui.Layouts;
 
+import Game.tools.GameResourcesAndSettings;
 import org.lwjgl.input.Keyboard;
 
 import Game.tools.Input;
-import Gui.GuiLayout;
+import Gui.Gui;
 import Gui.GuiManager;
 
-public class PlayingMenu extends GuiLayout{
+public class PlayingMenu extends Gui{
 
 	public PlayingMenu()
 	{
-		super();
+		super(GameResourcesAndSettings.GUI_TRANSPARENT, null);
 	}
 	
 	@Override
-	protected void updateLayout()
+	public void update()
 	{
 		if(Input.isKeyPressed('e'))
 		{

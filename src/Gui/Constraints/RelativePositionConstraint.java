@@ -3,21 +3,20 @@ package Gui.Constraints;
 import org.lwjgl.opengl.Display;
 
 public class RelativePositionConstraint extends PositionConstraint{
-
-	public static final int WIDTH = 0;
-	public static final int HEIGHT = 1;
 	
 	private float pos;
-	private int type;
 	
-	public RelativePositionConstraint(float pos, int type) {
+	public RelativePositionConstraint(float pos) {
 		this.pos = pos;
-		this.type = type;
 	}
-	
+
+	/**
+	 *
+	 * @return returns the normalised coords
+	 */
 	@Override
-	public int getPos() {
-		return (int) ((type == WIDTH) ? pos * Display.getWidth() : pos * Display.getHeight());
+	public float getPos() {
+		return pos;
 	}
 
 }

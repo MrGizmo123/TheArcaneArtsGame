@@ -9,7 +9,7 @@ public class AspectConstraint {
 	
 	public AspectConstraint(float aspectRatio)
 	{
-		this.aspectRatio = aspectRatio / DisplayManager.aspectRatio;
+		this.aspectRatio = aspectRatio;
 	}
 	
 	public float getWidthFromHeight(float height)

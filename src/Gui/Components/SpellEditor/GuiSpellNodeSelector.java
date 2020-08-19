@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Gui.Components.Draggable;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -13,7 +12,7 @@ import Game.Spell.SpellNodeType;
 import Game.tools.GameResourcesAndSettings;
 import Gui.Gui;
 import Gui.GuiLayout;
-import Gui.Components.Clickable;
+
 import Gui.Components.GuiButton;
 import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
@@ -28,9 +27,9 @@ public class GuiSpellNodeSelector extends Gui {
 	private List<GuiButton> nodeTypes;
 	private GuiSpellGrid grid;
 	
-	public GuiSpellNodeSelector(GuiLayout layout, GuiSpellGrid g)
+	public GuiSpellNodeSelector(Gui parent, GuiSpellGrid g)
 	{
-		super(GameResourcesAndSettings.GUI_GREY, layout);
+		super(GameResourcesAndSettings.GUI_GREY, parent);
 		nodeTypes = new ArrayList<>();
 		grid = g;
 		
@@ -54,15 +53,13 @@ public class GuiSpellNodeSelector extends Gui {
 	{
 		super.show();
 		
-		parentLayout.setFocusedGui(this);
-		
 		positionGuis(pos);
 	}
 	
 	@Override
 	public void hide()
 	{
-		this.parentLayout.removeGui(this);
+		this.parent.removeGui(this);
 
 		//System.out.println(this.parentLayout.getGuis().contains(this));
 		
@@ -119,7 +116,7 @@ public class GuiSpellNodeSelector extends Gui {
 
 		for(SpellNodeType type : types) 
 		{
-			GuiButton b = new GuiButton(type.name(), TEXT_SIZE, GameResourcesAndSettings.GUI_DARK_GREY, super.parentLayout) {
+			GuiButton b = new GuiButton(type.name(), TEXT_SIZE, GameResourcesAndSettings.GUI_DARK_GREY, super.parent) {
 				@Override
 				public void clicked() {
 					grid.addNode(type);

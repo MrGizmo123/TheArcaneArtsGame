@@ -26,6 +26,13 @@ public class BlockRenderer {
 		shader.loadProjMatrix(projMatrix);
 		shader.stop();
 	}
+
+	public void updateProjectionMatrix(Matrix4f projMatrix)
+	{
+		shader.start();
+		shader.loadProjMatrix(projMatrix);
+		shader.stop();
+	}
 	
 	public void prepare() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

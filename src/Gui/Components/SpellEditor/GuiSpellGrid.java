@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import Gui.Gui;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -19,9 +20,9 @@ public class GuiSpellGrid {
 	private static Map<Integer, GuiSpellNode> nodes;
 	int currentPtr;
 	
-	private GuiLayout parent;
+	private Gui parent;
 	
-	public GuiSpellGrid(GuiLayout l)
+	public GuiSpellGrid(Gui l)
 	{
 		nodes = new HashMap<>();
 		currentPtr = 0;
@@ -30,12 +31,11 @@ public class GuiSpellGrid {
 	
 	public void update()
 	{
-		if(Input.isKeyPressed('a'))
+		if(parent instanceof SpellProgrammingMenu)
 		{
-			if(parent instanceof SpellProgrammingMenu)
+			SpellProgrammingMenu menu = (SpellProgrammingMenu) parent;
+			if(Input.isKeyPressed('a') && menu.isBackgroundFocused())
 			{
-				SpellProgrammingMenu menu = (SpellProgrammingMenu) parent;
-				
 				menu.showSelector(new Vector2f(Mouse.getX(),Mouse.getY()));
 			}
 		}

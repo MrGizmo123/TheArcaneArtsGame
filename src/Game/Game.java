@@ -49,7 +49,7 @@ public class Game {
 			renderer.renderCustomBlocks(world.getBlockData().getCustomBlocks(), world.getSun(), world.getPlayer());
 			renderer.renderEntities(world.getEntities(), world.getPlayer().getCam());
 			
-			guiRenderer.renderGuis(GuiManager.getActiveGuis());
+			guiRenderer.renderGuisRecursive(GuiManager.getActiveLayout());
 			
 			GuiManager.update();
 			

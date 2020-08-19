@@ -24,6 +24,13 @@ public class EntityRenderer {
 		shader.loadProjMatrix(projMatrix);
 		shader.start();
 	}
+
+	public void updateProjectionMatrix(Matrix4f projMatrix)
+	{
+		shader.start();
+		shader.loadProjMatrix(projMatrix);
+		shader.stop();
+	}
 	
 	private void bindEntity(Entity e)
 	{

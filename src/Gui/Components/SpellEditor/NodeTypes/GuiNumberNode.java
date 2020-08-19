@@ -1,6 +1,7 @@
 package Gui.Components.SpellEditor.NodeTypes;
 
 import Game.Spell.SpellNodeType;
+import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.Components.GuiTextField;
 import Gui.Components.SpellEditor.GuiSpellNode;
@@ -12,10 +13,10 @@ public class GuiNumberNode extends GuiSpellNode{
 
 	private GuiTextField number;
 	
-	public GuiNumberNode(int pointer, GuiLayout parentLayout) {
-		super(SpellNodeType.NUMBER, pointer, parentLayout);
+	public GuiNumberNode(int pointer, Gui parent) {
+		super(SpellNodeType.NUMBER, pointer, parent);
 		
-		this.number = new GuiTextField(0.3f, true, parentLayout);
+		this.number = new GuiTextField(0.3f, true, parent);
 		
 		this.number.addXPosConstraint(new AbsolutePositionConstraint((int) super.getPositionInViewPort().x));
 		this.number.addYPosConstraint(new AbsolutePositionConstraint((int) super.getPositionInViewPort().y));

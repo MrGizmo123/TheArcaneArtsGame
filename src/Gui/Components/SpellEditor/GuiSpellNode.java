@@ -2,6 +2,7 @@ package Gui.Components.SpellEditor;
 
 import Game.tools.Input;
 import Gui.Components.Draggable;
+import Gui.Gui;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
@@ -10,7 +11,7 @@ import Game.Spell.SpellDataType;
 import Game.Spell.SpellNodeType;
 import Game.tools.GameResourcesAndSettings;
 import Gui.GuiLayout;
-import Gui.Components.Clickable;
+
 import Gui.Components.GuiButton;
 import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
@@ -25,13 +26,13 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 	private int pointer;
 	
 	// the pointer var will contain the pointer to this node
-	public GuiSpellNode(SpellNodeType type, int pointer, GuiLayout parentLayout)
+	public GuiSpellNode(SpellNodeType type, int pointer, Gui parent)
 	{
-		super(type.name(), 0.3f, GameResourcesAndSettings.GUI_GREY, new Vector2f(0, 50), parentLayout);
+		super(type.name(), 0.3f, GameResourcesAndSettings.GUI_GREY, new Vector2f(0, 50), parent);
 		this.type = type;
 		this.pointer = pointer;
 		
-		createGuis(parentLayout);
+		createGuis();
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 		}
 	}
 
-	private void createGuis(GuiLayout parentLayout)
+	private void createGuis()
 	{
 		this.addScaleConstraint(new ScaleConstraint(width, ScaleConstraint.WIDTH));
 		this.addAspectConstraint(new AspectConstraint(1));
@@ -57,11 +58,11 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 		show();
 		
 		Vector2f nodePos = new Vector2f(Mouse.getX(),Mouse.getY());
-		addInputs(type.getNoOfInputs(), nodePos, width, parentLayout);
-		addOutputs(type.getNoOfOutputs(), nodePos, width, parentLayout);
+		addInputs(type.getNoOfInputs(), nodePos, width);
+		addOutputs(type.getNoOfOutputs(), nodePos, width);
 	}
 	
-	private void addInputs(int noOfInputs, Vector2f nodePos, float nodeWidth, GuiLayout parentLayout)
+	private void addInputs(int noOfInputs, Vector2f nodePos, float nodeWidth)
 	{
 		float increment = 2f / (float)(noOfInputs + 1);
 		
@@ -77,7 +78,7 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 		
 	}
 	
-	private void addOutputs(int noOfOutputs, Vector2f nodePos, float nodeWidth, GuiLayout parentLayout)
+	private void addOutputs(int noOfOutputs, Vector2f nodePos, float nodeWidth)
 	{
 		float increment = 2f / (float)(noOfOutputs + 1);
 		
@@ -95,13 +96,13 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 	
 	private void addInput(Vector2f cursor, SpellDataType typeOfPort, int index)
 	{
-		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout) {
+		GuiButton g = new GuiButton(typeOfPort.getTexture(), parent) {
 			@Override
 			public void clicked() {
 
-				if(parentLayout instanceof SpellProgrammingMenu)
+				if(parent instanceof SpellProgrammingMenu)
 				{
-					SpellProgrammingMenu menu = (SpellProgrammingMenu) parentLayout;
+					SpellProgrammingMenu menu = (SpellProgrammingMenu) parent;
 
 					if(menu.isConnectorSelected())
 					{
@@ -125,13 +126,13 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 	
 	private void addOutput(Vector2f cursor, SpellDataType typeOfPort)
 	{
-		GuiButton g = new GuiButton(typeOfPort.getTexture(), parentLayout) {
+		GuiButton g = new GuiButton(typeOfPort.getTexture(), parent) {
 			@Override
 			public void clicked() {
 
-				if(parentLayout instanceof SpellProgrammingMenu)
+				if(parent instanceof SpellProgrammingMenu)
 				{
-					SpellProgrammingMenu menu = (SpellProgrammingMenu) parentLayout;
+					SpellProgrammingMenu menu = (SpellProgrammingMenu) parent;
 
 					if(menu.isConnectorSelected())
 					{
@@ -144,7 +145,7 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 							new Vector2f(Mouse.getX(), Mouse.getY()),
 							typeOfPort,
 							10,
-							parentLayout,
+                            parent,
 							pointer));
 				}
 

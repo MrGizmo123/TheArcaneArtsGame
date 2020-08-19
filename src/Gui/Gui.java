@@ -3,6 +3,7 @@ package Gui;
 import Gui.TextRendering.Text;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
 import Game.tools.Input;
@@ -25,7 +26,8 @@ public class Gui {
 	private AspectConstraint aspectConstraint;
 	
 	protected int texture;
-	protected GuiLayout parentLayout;
+	protected Gui parent;
+	protected List<Gui> children;
 	
 	private AABB boundingBox;
 	private boolean hasFocus;
@@ -35,17 +37,19 @@ public class Gui {
 	private boolean isFocusable;
 	private boolean showFocusStatus;
 
+	private Matrix4f transform;
+
 	// default settings
-	public Gui(int texture, GuiLayout layout)
+	public Gui(int texture, Gui parent)
 	{
 		this.texture = texture;
-		this.xConstraint = new CenterConstraint(CenterConstraint.X);
-		this.yConstraint = new CenterConstraint(CenterConstraint.Y);
+		this.xConstraint = new CenterConstraint();
+		this.yConstraint = new CenterConstraint();
 		
 		this.scaleConstraint = new ScaleConstraint(0.5f,ScaleConstraint.WIDTH);
 		this.aspectConstraint = new AspectConstraint(1);
 		
-		this.parentLayout = layout;
+		this.parent = parent;
 		
 		recalculateAABB();
 		hasFocus = false;
@@ -54,7 +58,30 @@ public class Gui {
 		showFocusStatus = true;
 
 		texts = new ArrayList<>();
+		children = new ArrayList<>();
+
+		recalculateTransform();
 	}
+
+	public Matrix4f getTransform()
+	{
+		return transform;
+	}
+
+	public void addGui(Gui g)
+	{
+		children.add(g);
+	}
+
+	public void removeGui(Gui g)
+	{
+		children.remove(g);
+	}
+
+	public List<Gui> getChildren()
+    {
+        return children;
+    }
 
 	public void setShowFocusStatus(boolean show)
 	{
@@ -94,7 +121,15 @@ public class Gui {
 	//update function (some subclases might need this)
 	public void update()
 	{
-		
+		for(Gui g : children)
+		{
+			g.update();
+		}
+
+		if(Display.wasResized())
+		{
+			windowResized();
+		}
 	}
 	
 	public boolean hasFocus()
@@ -183,15 +218,20 @@ public class Gui {
 	{
 		
 	}
+
+	protected void windowResized()
+	{
+
+	}
 	
 	public void show()
 	{
-		this.parentLayout.addGui(this);
+		this.parent.addGui(this);
 	}
 	
 	public void hide()
 	{
-		this.parentLayout.removeGui(this);
+		this.parent.removeGui(this);
 	}
 	
 	// self explanatory
@@ -201,6 +241,7 @@ public class Gui {
 		this.xConstraint = c;
 		constraintsUpdated();
 		recalculateAABB();
+		recalculateTransform();
 	}
 	
 	public void addYPosConstraint(PositionConstraint c)
@@ -208,6 +249,8 @@ public class Gui {
 		this.yConstraint = c;
 		constraintsUpdated();
 		recalculateAABB();
+		recalculateTransform();
+
 	}
 	
 	public void addScaleConstraint(ScaleConstraint c)
@@ -215,6 +258,7 @@ public class Gui {
 		this.scaleConstraint = c;
 		constraintsUpdated();
 		recalculateAABB();
+		recalculateTransform();
 	}
 	
 	public void addAspectConstraint(AspectConstraint c)
@@ -222,6 +266,27 @@ public class Gui {
 		this.aspectConstraint = c;
 		constraintsUpdated();
 		recalculateAABB();
+		recalculateTransform();
+	}
+
+	public void recalculateTransform()
+	{
+		if(parent != null)
+		{
+
+			Matrix4f selfTransform = Maths.createTransMatrix(this.getPositionInNDC(), this.getScale());
+			transform = Matrix4f.mul(parent.getTransform(), selfTransform, transform);
+		}
+		else
+		{
+			transform = new Matrix4f();
+			transform.setIdentity();
+		}
+
+		for(Gui g : children)
+		{
+			g.recalculateTransform();
+		}
 	}
 	
 	// returns opengl texture id
@@ -238,21 +303,33 @@ public class Gui {
 	// calculates and returns the position in Normalised Device Coordinates
 	public Vector2f getPositionInNDC()
 	{
-		int xPos = xConstraint.getPos();
-		int yPos = yConstraint.getPos();
+		float xPos = xConstraint.getPos();
+		float yPos = yConstraint.getPos();
 		
-		Vector2f ndc = Maths.viewportToNDC(new Vector2f(xPos, yPos));
+		Vector2f ndc = Maths.viewportToNDC(Maths.normalisedToViewport(new Vector2f(xPos, yPos)));
 		return ndc;
 	}
-	
+
+	/**
+	 * @return returns the position in viewport coords
+	 */
 	// calculates and returns the position in Viewport coords
 	public Vector2f getPositionInViewPort()
 	{
-		int xPos = xConstraint.getPos();
-		int yPos = yConstraint.getPos();
+		float xPos = xConstraint.getPos();
+		float yPos = yConstraint.getPos();
 		
-		Vector2f result = new Vector2f(xPos, yPos);
+		Vector2f result = Maths.normalisedToViewport(new Vector2f(xPos, yPos));
 		return result;
+	}
+
+	/**
+	 *
+	 * @return returns normalised coordinates , topLeft:(0,0), bottomRight:(1,1)
+	 */
+	public Vector2f getCoordinates()
+	{
+		return new Vector2f(xConstraint.getPos(), yConstraint.getPos());
 	}
 	
 	// calculates the scale according to axes and aspect ratio and returns it

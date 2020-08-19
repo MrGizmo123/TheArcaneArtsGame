@@ -3,6 +3,7 @@ package Game.Render.SubRenderers;
 import java.util.List;
 import java.util.Map;
 
+import Game.Render.DisplayManager;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -34,13 +35,14 @@ public class FontRenderer {
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		
-		shader.loadTransMatrix(Maths.createTransMatrix(Maths.getTextPositionFromNDC(t.getPosNDC()), new Vector2f(1,1)));
+		shader.loadTransMatrix(Maths.createTransMatrix(t.getPosNDC(), new Vector2f(1f/DisplayManager.aspectRatio,1)));
 	}
 	
 	public void renderTexts(List<Text> texts)
 	{
 		shader.start();
-		
+		shader.loadDisplayAspectRatio(DisplayManager.aspectRatio);
+
 		for(Text t : texts)
 		{
 			shader.loadTexture(t.getFont().getGlyphTexture());

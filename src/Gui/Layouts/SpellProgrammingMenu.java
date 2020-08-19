@@ -15,7 +15,7 @@ import Gui.Components.SpellEditor.GuiSpellNodeSelector;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
 
-public class SpellProgrammingMenu extends GuiLayout{
+public class SpellProgrammingMenu extends Gui{
 
 	private GuiSpellGrid grid;
 	private GuiSpellConnector selectedConnector;
@@ -25,7 +25,7 @@ public class SpellProgrammingMenu extends GuiLayout{
 	
 	public SpellProgrammingMenu()
 	{
-		
+		super(GameResourcesAndSettings.GUI_DARK_GREY, null);
 		bg = new Gui(GameResourcesAndSettings.GUI_DARK_GREY, this);
 		bg.addScaleConstraint(new ScaleConstraint(1f, ScaleConstraint.WIDTH));
 		bg.addAspectConstraint(new AspectConstraint(1));
@@ -40,9 +40,8 @@ public class SpellProgrammingMenu extends GuiLayout{
 	}
 	
 	@Override
-	protected void updateLayout()
+	public void update()
 	{
-		
 		if(Input.isKeyPressed('e') && bg.hasFocus())
 		{
 			GuiManager.loadPlayingLayout();
@@ -71,11 +70,6 @@ public class SpellProgrammingMenu extends GuiLayout{
 				removeCurrentConnector();
 			}
 		}
-	}
-	
-	public void setBackgroundAsFocus()
-	{
-		super.setFocusedGui(bg);
 	}
 	
 	public void showSelector(Vector2f pos)
@@ -119,5 +113,7 @@ public class SpellProgrammingMenu extends GuiLayout{
 	{
 		return grid.getNodeFromPtr(ptr);
 	}
+
+	public boolean isBackgroundFocused() { return bg.hasFocus(); }
 	
 }

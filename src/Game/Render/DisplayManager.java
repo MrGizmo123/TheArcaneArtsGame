@@ -19,6 +19,7 @@ public class DisplayManager {
 			Display.setDisplayMode(new DisplayMode(1280, 720));
 			Display.create(new PixelFormat(), attribs);
 			//Display.setFullscreen(true);
+			Display.setResizable(true);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
@@ -28,8 +29,8 @@ public class DisplayManager {
 	
 	public static void updateDisplay(){
 		Display.update();                  
-		//GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		//aspectRatio = (float)Display.getWidth() / (float)Display.getHeight();
+		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		aspectRatio = (float)Display.getWidth() / (float)Display.getHeight();
 	}
 	
 	public static void closeDisplay(){

@@ -27,6 +27,13 @@ public class CustomModelBlockRenderer {
 		shader.loadProjMatrix(projMatrix);
 		shader.stop();
 	}
+
+	public void updateProjectionMatrix(Matrix4f projMatrix)
+	{
+		shader.start();
+		shader.loadProjMatrix(projMatrix);
+		shader.stop();
+	}
 	
 	private void prepare()
 	{
