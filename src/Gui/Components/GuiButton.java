@@ -135,10 +135,10 @@ public class GuiButton extends Gui {
 	
 	private void positionText()
 	{
-		Vector2f viewport = super.getPositionInViewPort();
-		Vector2f translatedPos = Vector2f.add(viewport, textOffset, null);
+		Vector2f normalised = super.getCoordinates();
+		Vector2f translatedPos = new Vector2f(normalised.x, normalised.y + (text.getMesh().getHeight() / 4));
 		
-		text.changePos(super.getCoordinates());
+		text.changePos(translatedPos);
 	}
 	
 	private void recalculateAABB()

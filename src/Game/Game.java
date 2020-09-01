@@ -9,6 +9,7 @@ import java.time.Instant;
 
 import javax.imageio.ImageIO;
 
+import Game.Logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -33,13 +34,14 @@ public class Game {
 	private static GuiRenderer guiRenderer;
 	
 	public static boolean gameInput = true;
+	public static boolean isRunning = true;
 	
 	public static void main(String args[]) {
 		
 		DisplayManager.createDisplay();
 		init();
 		
-		while(!Display.isCloseRequested()) {
+		while(!Display.isCloseRequested() && isRunning) {
 			renderer.prepare();
 			renderer.renderStandardBlocks(world.getBlockData().getStandardBlockModel(),
 								  world.getBlockData().getNoOfBlocks(),
@@ -79,8 +81,11 @@ public class Game {
 	{
 		gameInput = true;
 	}
+
+	public static void closeGame() { isRunning = false;}
 	
 	private static void init() {
+		Logger.i("Main", "initializing");
 		GameTickUpdater.init();
 		
 		loader = new Loader();

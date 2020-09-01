@@ -56,7 +56,7 @@ public class OBJLoader {
                     break;
                 }
             }
-            System.out.println(vertices.size());
+
             while (line != null && line.startsWith("f ")) {
                 String[] currentLine = line.split(" ");
                 String[] vertex1 = currentLine[1].split("/");
@@ -71,9 +71,9 @@ public class OBJLoader {
         } catch (IOException e) {
             System.err.println("Error reading the file");
         }
-        //System.out.println(vertices.size());
+
         removeUnusedVertices(vertices);
-        System.out.println(vertices.size());
+
         float[] verticesArray = new float[vertices.size() * 3];
         float[] texturesArray = new float[vertices.size() * 2];
         float[] normalsArray = new float[vertices.size() * 3];

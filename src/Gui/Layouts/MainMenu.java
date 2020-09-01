@@ -19,29 +19,29 @@ public class MainMenu extends Gui{
 	{
 		super(GameResourcesAndSettings.GUI_TRANSPARENT, null);
 		
-		/*GuiLabel title = new GuiLabel("The Arcane Arts!", 1f, this);
-		title.addYPosConstraint(new RelativePositionConstraint(0.1f));
+		GuiLabel title = new GuiLabel("The Arcane Arts!", 2f, this);
+		title.addYPosConstraint(new RelativePositionConstraint(0.8f));
 
 		title.setFocusable(false);
 
-		GuiButton play = new GuiButton("Play", 0.75f, this) {
+		GuiButton play = new GuiButton("Play", 1.2f, this) {
 			@Override
 			public void clicked() {
 				GuiManager.loadPlayingLayout();
 			}
 		};
 		
-		play.addScaleConstraint(new ScaleConstraint(0.2f, ScaleConstraint.WIDTH));
+		play.addScaleConstraint(new ScaleConstraint(0.3f, ScaleConstraint.WIDTH));
 		play.addAspectConstraint(new AspectConstraint(1.77f));
 		
-		GuiButton quit = new GuiButton("Quit", 0.75f, this) {
+		GuiButton quit = new GuiButton("Quit", 1.2f, this) {
 			@Override
 			public void clicked() {
-				GuiManager.loadPlayingLayout();
+				Game.closeGame();
 			}
 		};
 		
-		quit.addScaleConstraint(new ScaleConstraint(0.2f, ScaleConstraint.WIDTH));
+		quit.addScaleConstraint(new ScaleConstraint(0.3f, ScaleConstraint.WIDTH));
 		quit.addAspectConstraint(new AspectConstraint(1.77f));
 		quit.addYPosConstraint(new RelativePositionConstraint(0.277f));
 		
@@ -49,14 +49,14 @@ public class MainMenu extends Gui{
 		super.addGui(quit);
 		super.addGui(title);
 		
-		Game.freezeGameInput();*/
+		Game.freezeGameInput();
 
-		GuiButton g = new GuiButton("public static", 1f, this);
+		/*GuiButton g = new GuiButton("public static", 1f, this);
 		g.addXPosConstraint(new AbsolutePositionConstraint(0.5f));
 		g.addYPosConstraint(new AbsolutePositionConstraint(0.5f));
-		//g.addAspectConstraint(new AspectConstraint(1));
+		//g.addAspectConstraint(new AspectConstraint(1));*/
 
-		this.addGui(g);
+		//this.addGui(g);
 		
 	}
 	

@@ -15,6 +15,7 @@ public class TextMeshData {
 	private Vector2f cursor;
 	private Font font;
 	private float size;
+	private float height;
 	
 	private boolean isCentered;
 	
@@ -34,8 +35,7 @@ public class TextMeshData {
 		this.size = size;
 		this.font = f;
 		this.cursor = new Vector2f(0, 0);
-		
-		//cursor.y+=(GameResourcesAndSettings.LINE_HEIGHT * size * Display.getHeight());
+		this.height = 0;
 		
 		vertexPositions = new ArrayList<Float>();
 		textureCoords = new ArrayList<Float>();
@@ -43,6 +43,7 @@ public class TextMeshData {
 		charIds = toCharList(text.toCharArray());
 		
 		generateQuads(text);
+		calculateHeight();
 		
 		float[] vertices = toFloatArray(vertexPositions);
 		float[] texCoords = toFloatArray(textureCoords);
@@ -57,6 +58,25 @@ public class TextMeshData {
 		Game.loader.addAttrib(vaoID, vertexVbo, 0, 3);
 		Game.loader.addAttrib(vaoID, texCoordVbo, 1, 2);
 		
+	}
+
+	private void calculateHeight()
+	{
+		float lowest = vertexPositions.get(1);
+		float highest = vertexPositions.get(1);
+		for(int i=1;i<=vertexPositions.size();i+=3)
+		{
+			if(vertexPositions.get(i) > highest)
+			{
+				highest = vertexPositions.get(i);
+			}
+			else if(vertexPositions.get(i) < lowest)
+			{
+				lowest = vertexPositions.get(i);
+			}
+		}
+
+		height = highest - lowest;
 	}
 	
 	public void newline()
@@ -142,7 +162,7 @@ public class TextMeshData {
 		bottomLeft.y*=size;
 		topRight.x*=size;
 		topRight.y*=size;
-		
+
 		Vector2f p1 = new Vector2f(bottomLeft.x, bottomLeft.y);
 		Vector2f p2 = new Vector2f(topRight.x, bottomLeft.y);
 		Vector2f p3 = new Vector2f(bottomLeft.x, topRight.y);
@@ -204,6 +224,11 @@ public class TextMeshData {
 		
 		Game.loader.updateVbof(vertexVbo, vertices);
 		Game.loader.updateVbof(texCoordVbo, texCoords);
+	}
+
+	public float getHeight()
+	{
+		return height;
 	}
 	
 	public int getVertexCount()
@@ -274,8 +299,6 @@ public class TextMeshData {
 	
 	private void addVertex(Vector2f vertex)
 	{
-		Vector2f ndc = Maths.viewportToNDC(vertex);
-		System.out.println(ndc);
 		vertexPositions.add(vertex.x / 1000);
 		vertexPositions.add(vertex.y / 1000);
 		vertexPositions.add(0f);

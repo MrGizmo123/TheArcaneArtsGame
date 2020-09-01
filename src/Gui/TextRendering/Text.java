@@ -11,6 +11,7 @@ public class Text {
 	private TextMeshData mesh;
 	private Font font;
 	private float size;
+	private float height;
 	
 	private Vector2f pos;
 	
