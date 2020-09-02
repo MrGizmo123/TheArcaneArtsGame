@@ -1,12 +1,9 @@
 package Gui.Layouts;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
 import Gui.Gui;
-import Gui.GuiLayout;
+
 import Gui.GuiManager;
 import Gui.Components.SpellEditor.GuiSpellConnector;
 import Gui.Components.SpellEditor.GuiSpellGrid;
@@ -14,6 +11,7 @@ import Gui.Components.SpellEditor.GuiSpellNode;
 import Gui.Components.SpellEditor.GuiSpellNodeSelector;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
+import VecMath.Vector2f;
 
 public class SpellProgrammingMenu extends Gui{
 
@@ -56,7 +54,7 @@ public class SpellProgrammingMenu extends Gui{
 	{
 		if(isConnectorSelected())
 		{
-			Vector2f mousePos = new Vector2f(Mouse.getX(), Mouse.getY());
+			Vector2f mousePos = Input.getMousePosition();
 			this.selectedConnector.setP2(mousePos);
 			
 			if(Input.isKeyPressed('t'))
@@ -65,7 +63,7 @@ public class SpellProgrammingMenu extends Gui{
 				this.selectedConnector = new GuiSpellConnector(mousePos, mousePos, c.getType(), c.getWidth(), this, c.getInputNodePointer());
 			}
 
-			if(Mouse.isButtonDown(1))
+			if(Input.isMouseButtonPressed(1))
 			{
 				removeCurrentConnector();
 			}

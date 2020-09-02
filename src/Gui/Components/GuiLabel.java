@@ -1,11 +1,10 @@
 package Gui.Components;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.tools.GameResourcesAndSettings;
 import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.TextRendering.Text;
+import VecMath.Vector2f;
 
 public class GuiLabel extends Gui{
 

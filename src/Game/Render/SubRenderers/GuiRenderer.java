@@ -2,20 +2,19 @@ package Game.Render.SubRenderers;
 
 import java.util.List;
 
-import Gui.TextRendering.Text;
+import Game.Logging.Logger;
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
+
 
 import Game.Render.DisplayManager;
 import Game.Render.Shaders.GuiShader;
 import Game.tools.GameResourcesAndSettings;
-import Game.tools.Maths;
+
 import Gui.Gui;
-import Gui.TextRendering.TextMeshData;
-import org.lwjgl.util.vector.Vector3f;
+
 
 public class GuiRenderer {
 

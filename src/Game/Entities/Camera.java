@@ -1,7 +1,7 @@
 package Game.Entities;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector3f;
+import Game.tools.Input;
+import VecMath.Vector3f;
 
 import Game.Game;
 import Game.World.GameTickUpdater;
@@ -9,8 +9,8 @@ import Game.World.GameTickUpdater;
 public class Camera {
 
 	private static final float DISTANCE_FROM_PLAYER = 50f;
-	private static final float ANGULAR_DAMPING = 0.98f;
-	private static final float PITCH_DAMPING = 0.98f;
+	private static final float ANGULAR_DAMPING = 0.93f;
+	private static final float PITCH_DAMPING = 0.93f;
 	
 	public float distanceFromCenter = DISTANCE_FROM_PLAYER;
 	
@@ -51,7 +51,7 @@ public class Camera {
 	}
 	
 	private void calculateZoom(){
-		float zoom = Mouse.getDWheel() * 0.1f;
+		float zoom = Input.getMouseDWheel() * 0.1f;
 		distanceFromCenter -= zoom;
 		//pos.x = pos.x * distanceFromCenter;
 		//pos.y = pos.y * distanceFromCenter;
@@ -70,9 +70,9 @@ public class Camera {
 	
 	private void calculatePitchAndAngleAroundCenter(){
 		
-		if(Mouse.isButtonDown(0) && Game.gameInput){
-			float dPitch = Mouse.getDY() * 0.5f;
-			float dAngle = Mouse.getDX() * 1f;
+		if(Input.isMouseButtonDown(0) && Game.gameInput){
+			float dPitch = Input.getMouseDY() * 0.5f;
+			float dAngle = Input.getMouseDX() * 1f;
 			
 			this.pitchVelocity -= dPitch;
 			this.angularVelocity -= dAngle;

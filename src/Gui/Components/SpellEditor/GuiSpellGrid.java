@@ -6,13 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Gui.Gui;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
 
 import Game.Spell.SpellNodeType;
 import Game.tools.Input;
-import Gui.GuiLayout;
-import Gui.Components.SpellEditor.NodeTypes.GuiPushNode;
 import Gui.Layouts.SpellProgrammingMenu;
 
 public class GuiSpellGrid {
@@ -36,7 +32,7 @@ public class GuiSpellGrid {
 			SpellProgrammingMenu menu = (SpellProgrammingMenu) parent;
 			if(Input.isKeyPressed('a') && menu.isBackgroundFocused())
 			{
-				menu.showSelector(new Vector2f(Mouse.getX(),Mouse.getY()));
+				menu.showSelector(Input.getMousePosition());
 			}
 		}
 	}

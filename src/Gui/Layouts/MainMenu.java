@@ -2,7 +2,6 @@ package Gui.Layouts;
 
 import Game.tools.GameResourcesAndSettings;
 import Gui.Constraints.*;
-import org.lwjgl.input.Keyboard;
 
 import Game.Game;
 
@@ -10,8 +9,6 @@ import Gui.Gui;
 import Gui.GuiManager;
 import Gui.Components.GuiButton;
 import Gui.Components.GuiLabel;
-
-import javax.management.monitor.GaugeMonitor;
 
 public class MainMenu extends Gui{
 
@@ -64,7 +61,7 @@ public class MainMenu extends Gui{
 	public void update()
 	{
 		super.update();
-		while(Keyboard.next());
+
 	}
 	
 }

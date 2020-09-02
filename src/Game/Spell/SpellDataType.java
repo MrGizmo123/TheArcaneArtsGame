@@ -1,9 +1,8 @@
 package Game.Spell;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import Game.Entities.Entity;
 import Game.tools.GameResourcesAndSettings;
+import VecMath.Vector3f;
 
 public enum SpellDataType {
 

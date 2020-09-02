@@ -1,6 +1,6 @@
 package Gui.TextRendering;
 
-import org.lwjgl.util.vector.Vector2f;
+import VecMath.Vector2f;
 
 import Game.tools.Maths;
 

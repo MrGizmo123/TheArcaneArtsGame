@@ -1,7 +1,5 @@
 package Gui.Constraints;
 
-import org.lwjgl.opengl.Display;
-
 public class CenterConstraint extends PositionConstraint{
 	
 	public CenterConstraint()

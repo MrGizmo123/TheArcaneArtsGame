@@ -1,24 +1,18 @@
 package Game.tools;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GLContext;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.lwjgl.opengl.*;
 
 import Game.Models.Model;
 import Game.Models.ModelData;
@@ -161,33 +155,58 @@ public class Loader {
 			GL11.glDeleteTextures(texture);
 		}
 	}
-	
-	public int loadTexture(String fileName){
-		Texture texture = null;
+
+
+	public static int loadTexture(String fileName){
+
+		//load png file
+		PNGDecoder decoder = null;
 		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
-			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-			
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL13.GL_CLAMP_TO_BORDER);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL13.GL_CLAMP_TO_BORDER);
-			
-			if(GLContext.getCapabilities().GL_EXT_texture_filter_anisotropic){
-				float amount = Math.min(4f, EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-				GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
-			}else{
-				System.out.println("anisotropic filtering not supported");
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			decoder = new PNGDecoder(new FileInputStream(new File("res\\" + fileName + ".png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		int textureID = texture.getTextureID();
-		textures.add(textureID);
-		return textureID;
+
+		//create a byte buffer big enough to store RGBA values
+		ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
+
+		//decode
+		try {
+			decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//flip the buffer so its ready to read
+		buffer.flip();
+
+		//create a texture
+		int id = GL11.glGenTextures();
+
+		//bind the texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+
+		//tell opengl how to unpack bytes
+		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+
+		//set the texture parameters, can be GL_LINEAR or GL_NEAREST
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+
+		//upload texture
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+
+		// Generate Mip Map
+		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+
+		if(GL.getCapabilities().GL_EXT_texture_filter_anisotropic){
+			float amount = Math.min(4f, EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
+		}else{
+			System.out.println("anisotropic filtering not supported");
+		}
+
+		return id;
 	}
 	
 	private void storeIndeces(int[] indeces){

@@ -18,19 +18,19 @@ public class Logger {
 
     public static void i(String tag, String message)
     {
-        System.out.println(getTimestamp() + " INFO: " + message);
+        System.out.println(getTimestamp() + " " + tag + " INFO: " + message);
     }
 
     public static void w(String tag, String message)
     {
         Timestamp t = Timestamp.from(Instant.now());
-        System.out.println(getTimestamp() + " WARN: " + message);
+        System.out.println(getTimestamp() + " " + tag + " WARN: " + message);
     }
 
     public static void e(String tag, String message)
     {
         Timestamp t = Timestamp.from(Instant.now());
-        System.err.println(getTimestamp() + " ERROR: " + message);
+        System.err.println(getTimestamp() + " " + tag + " ERROR: " + message);
     }
 
 }

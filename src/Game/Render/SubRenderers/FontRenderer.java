@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import Game.Render.DisplayManager;
+import VecMath.Vector2f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Vector2f;
+
 
 import Game.Render.Shaders.FontShader;
 import Game.tools.Maths;
-import Gui.TextRendering.Font;
+
 import Gui.TextRendering.Text;
 
 public class FontRenderer {

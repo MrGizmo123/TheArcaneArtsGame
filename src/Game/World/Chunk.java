@@ -6,13 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import Game.Entities.Blocks.AnimatedBlock;
 import Game.Entities.Blocks.Block;
 import Game.Entities.Blocks.CustomModelBlock;
 import Game.tools.utils.vec3;
+import VecMath.Vector2f;
+import VecMath.Vector3f;
 
 public class Chunk {
 

@@ -1,7 +1,5 @@
 package Game.tools;
 
-import org.lwjgl.opengl.Display;
-
 import Game.Game;
 import Game.Models.Model;
 import Game.Models.ModelData;
@@ -51,7 +49,7 @@ public class GameResourcesAndSettings {
 	public static final int GUI_GREEN = Game.loader.loadTexture("green_button_bg");
 	
 	public static final Font GAME_FONT = FontLoader.loadFont("C:\\Users\\HrushikeshP\\ArcaneArts\\TheArcaneArts\\res\\font.fnt", "font");
-	public static final float LINE_HEIGHT = GAME_FONT.getMaxHeight() / Display.getHeight();
+	public static final float LINE_HEIGHT = GAME_FONT.getMaxHeight();
 	
 	//ANIMATIONS
 	

@@ -11,7 +11,7 @@ uniform float displayAspectRatio;
 
 void main(void){
 
-	gl_Position =  transMatrix * vec4(pos.x / displayAspectRatio,pos.yz, 1);
+	gl_Position = transMatrix * vec4(pos.x / displayAspectRatio,pos.yz, 1);
 
 	passTextureCoords = texCoords;
 

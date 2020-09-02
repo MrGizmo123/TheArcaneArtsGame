@@ -1,11 +1,9 @@
 package Gui.Components.SpellEditor;
 
+import Game.Render.DisplayManager;
 import Game.tools.Input;
 import Gui.Components.Draggable;
 import Gui.Gui;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 
 import Game.Spell.SpellDataType;
 import Game.Spell.SpellNodeType;
@@ -17,6 +15,7 @@ import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
 import Gui.Layouts.SpellProgrammingMenu;
+import VecMath.Vector2f;
 
 public class GuiSpellNode extends GuiButton implements Draggable {
 
@@ -52,12 +51,12 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 		this.addScaleConstraint(new ScaleConstraint(width, ScaleConstraint.WIDTH));
 		this.addAspectConstraint(new AspectConstraint(1));
 			
-		this.addXPosConstraint(new AbsolutePositionConstraint(Mouse.getX()));
-		this.addYPosConstraint(new AbsolutePositionConstraint(Mouse.getY()));
+		this.addXPosConstraint(new AbsolutePositionConstraint(Input.getMousePosition().x));
+		this.addYPosConstraint(new AbsolutePositionConstraint(Input.getMousePosition().y));
 			
 		show();
 		
-		Vector2f nodePos = new Vector2f(Mouse.getX(),Mouse.getY());
+		Vector2f nodePos = Input.getMousePosition();
 		addInputs(type.getNoOfInputs(), nodePos, width);
 		addOutputs(type.getNoOfOutputs(), nodePos, width);
 	}
@@ -66,14 +65,14 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 	{
 		float increment = 2f / (float)(noOfInputs + 1);
 		
-		Vector2f cursor = new Vector2f(nodePos.x - (Display.getWidth() * nodeWidth / 2f),
-									   nodePos.y + (Display.getHeight() * nodeWidth * increment * (noOfInputs - 1)) / 2);
+		Vector2f cursor = new Vector2f(nodePos.x - (DisplayManager.WIDTH * nodeWidth / 2f),
+									   nodePos.y + (DisplayManager.HEIGHT * nodeWidth * increment * (noOfInputs - 1)) / 2);
 		
 		for(int i=0;i<noOfInputs;i++)
 		{
 			addInput(cursor, this.getInputDataType(i), i);
 			
-			cursor.y-=(increment * nodeWidth * Display.getHeight());
+			cursor.y-=(increment * nodeWidth * DisplayManager.HEIGHT);
 		}
 		
 	}
@@ -82,14 +81,14 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 	{
 		float increment = 2f / (float)(noOfOutputs + 1);
 		
-		Vector2f cursor = new Vector2f(nodePos.x + (Display.getWidth() * nodeWidth / 2f),
-									   nodePos.y + (Display.getHeight() * nodeWidth * increment * (noOfOutputs - 1)) / 2);
+		Vector2f cursor = new Vector2f(nodePos.x + (DisplayManager.WIDTH * nodeWidth / 2f),
+									   nodePos.y + (DisplayManager.HEIGHT * nodeWidth * increment * (noOfOutputs - 1)) / 2);
 		
 		for(int i=0;i<noOfOutputs;i++)
 		{
 			addOutput(cursor, this.getOutputDataType(i));
 			
-			cursor.y-=(increment * nodeWidth *  Display.getHeight());
+			cursor.y-=(increment * nodeWidth *  DisplayManager.HEIGHT);
 		}
 		
 	}
@@ -142,7 +141,7 @@ public class GuiSpellNode extends GuiButton implements Draggable {
 					}
 
 					menu.setSelectedConnector(new GuiSpellConnector(this.getPositionInViewPort(),
-							new Vector2f(Mouse.getX(), Mouse.getY()),
+							Input.getMousePosition(),
 							typeOfPort,
 							10,
                             parent,

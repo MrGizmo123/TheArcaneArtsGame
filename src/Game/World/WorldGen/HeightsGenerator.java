@@ -2,8 +2,6 @@ package Game.World.WorldGen;
 
 import java.util.Random;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.tools.Maths;
 
 public class HeightsGenerator {

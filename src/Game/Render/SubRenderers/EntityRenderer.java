@@ -2,10 +2,10 @@ package Game.Render.SubRenderers;
 
 import java.util.List;
 
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
 
 import Game.Entities.Camera;
 import Game.Entities.Entity;

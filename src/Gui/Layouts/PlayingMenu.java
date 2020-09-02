@@ -1,7 +1,6 @@
 package Gui.Layouts;
 
 import Game.tools.GameResourcesAndSettings;
-import org.lwjgl.input.Keyboard;
 
 import Game.tools.Input;
 import Gui.Gui;

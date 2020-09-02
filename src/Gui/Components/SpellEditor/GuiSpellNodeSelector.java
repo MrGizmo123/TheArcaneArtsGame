@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.Render.DisplayManager;
 import Game.Spell.SpellNodeType;
 import Game.tools.GameResourcesAndSettings;
@@ -17,6 +14,7 @@ import Gui.Components.GuiButton;
 import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
+import VecMath.Vector2f;
 
 public class GuiSpellNodeSelector extends Gui {
 
@@ -102,11 +100,11 @@ public class GuiSpellNodeSelector extends Gui {
 		float maxHeight = GameResourcesAndSettings.GAME_FONT.getMaxHeight();
 		float maxWidth = GameResourcesAndSettings.GAME_FONT.getMaxWidth();
 		
-		float buttonWidth = TEXT_SIZE * maxStringLength * maxWidth / (float)Display.getWidth();
+		float buttonWidth = TEXT_SIZE * maxStringLength * maxWidth / (float)DisplayManager.WIDTH;
 		float buttonAspect = maxStringLength * maxWidth / (maxHeight);
 		
-		float bgHeight = (TEXT_SIZE * maxHeight * (float)types.size() * buttonSpacing + (float)padding) / (float)Display.getHeight();
-		float bgWidth = (TEXT_SIZE * maxStringLength * maxWidth + (float)padding) / (float)Display.getWidth();
+		float bgHeight = (TEXT_SIZE * maxHeight * (float)types.size() * buttonSpacing + (float)padding) / (float)DisplayManager.HEIGHT;
+		float bgWidth = (TEXT_SIZE * maxStringLength * maxWidth + (float)padding) / (float)DisplayManager.WIDTH;
 		
 		// scale constraints for selector bg gui
 		this.addScaleConstraint(new ScaleConstraint(bgWidth, ScaleConstraint.WIDTH));

@@ -1,9 +1,7 @@
 package Gui.Components;
 
+import Game.Logging.Logger;
 import Game.Render.DisplayManager;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 
 import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
@@ -11,6 +9,7 @@ import Game.tools.utils.AABB;
 import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.TextRendering.Text;
+import VecMath.Vector2f;
 
 public class GuiButton extends Gui {
 

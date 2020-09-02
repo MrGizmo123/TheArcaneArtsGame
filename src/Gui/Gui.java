@@ -1,10 +1,7 @@
 package Gui;
 
+import Game.Render.DisplayManager;
 import Gui.TextRendering.Text;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 
 import Game.tools.Input;
 import Game.tools.Maths;
@@ -13,6 +10,8 @@ import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.CenterConstraint;
 import Gui.Constraints.PositionConstraint;
 import Gui.Constraints.ScaleConstraint;
+import VecMath.Matrix4f;
+import VecMath.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +125,7 @@ public class Gui {
 			g.update();
 		}
 
-		if(Display.wasResized())
+		if(DisplayManager.wasDisplayResized())
 		{
 			windowResized();
 		}
@@ -156,7 +155,7 @@ public class Gui {
 	public boolean checkFocus()
 	{
 		if(isFocusable) {
-			Vector2f mousePos = new Vector2f(Mouse.getX(), Mouse.getY());
+			Vector2f mousePos = Input.getMousePosition();
 			if (Input.isMouseButtonPressed(0)) {
 				if (boundingBox.isIntersecting(mousePos) && !hasFocus) {
 					setFocus();
@@ -200,8 +199,8 @@ public class Gui {
 		Vector2f scale = this.getScale();
 		Vector2f pos = this.getPositionInViewPort();
 		
-		int widthInPixels = (int) (scale.x * Display.getWidth());
-		int heightInPixels = (int) (scale.y * Display.getHeight());
+		int widthInPixels = (int) (scale.x * DisplayManager.WIDTH);
+		int heightInPixels = (int) (scale.y * DisplayManager.HEIGHT);
 		
 		int x1 = (int) (pos.x - ((float)widthInPixels / (float)2));
 		int y1 = (int) (pos.y - ((float)heightInPixels / (float)2));
@@ -363,11 +362,11 @@ public class Gui {
 		
 		if(scaleConstraint.getAxis() == ScaleConstraint.WIDTH)
 		{
-			width = (int) (scale * Display.getWidth());
+			width = (int) (scale * DisplayManager.WIDTH);
 		}
 		else
 		{
-			width = (int) (aspectConstraint.getWidthFromHeight(scale) * Display.getWidth());
+			width = (int) (aspectConstraint.getWidthFromHeight(scale) * DisplayManager.WIDTH);
 		}
 		
 		return width;
@@ -381,11 +380,11 @@ public class Gui {
 		
 		if(scaleConstraint.getAxis() == ScaleConstraint.WIDTH)
 		{
-			height = (int) (aspectConstraint.getHeightFromWidth(scale) * Display.getHeight());
+			height = (int) (aspectConstraint.getHeightFromWidth(scale) * DisplayManager.HEIGHT);
 		}
 		else
 		{
-			height = (int) (scale * Display.getHeight());
+			height = (int) (scale * DisplayManager.HEIGHT);
 		}
 		
 		return height;

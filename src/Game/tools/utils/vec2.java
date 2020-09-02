@@ -1,6 +1,6 @@
 package Game.tools.utils;
 
-import org.lwjgl.util.vector.Vector2f;
+import VecMath.Vector2f;
 
 public class vec2 {
 

@@ -3,12 +3,9 @@ package Gui.TextRendering;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.Game;
-import Game.tools.GameResourcesAndSettings;
-import Game.tools.Maths;
+import Game.Render.DisplayManager;
+import VecMath.Vector2f;
 
 public class TextMeshData {
 	
@@ -101,7 +98,7 @@ public class TextMeshData {
 	{
 		charIds.add(extra);
 		
-		shiftX((float)font.getCharacterXAdvance(extra)/((float)Display.getWidth()) * size);
+		shiftX((float)font.getCharacterXAdvance(extra)/((float) DisplayManager.WIDTH) * size);
 		cursor.x-=((float)font.getCharacterXAdvance(extra) / 2f);
 		generateQuad(extra);
 		
@@ -128,7 +125,7 @@ public class TextMeshData {
 		
 		vertexCount-=6;
 		
-		shiftX(-(float)font.getCharacterXAdvance(charIds.get(index))/((float)Display.getWidth()) * size);
+		shiftX(-(float)font.getCharacterXAdvance(charIds.get(index))/((float)DisplayManager.WIDTH) * size);
 		cursor.x-=(font.getCharacterXAdvance(charIds.get(index)) / 2f);
 		
 		charIds.remove(index);

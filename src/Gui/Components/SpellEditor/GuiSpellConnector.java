@@ -1,8 +1,5 @@
 package Gui.Components.SpellEditor;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.Render.DisplayManager;
 import Game.Spell.SpellDataType;
 import Gui.Gui;
@@ -11,6 +8,7 @@ import Gui.Constraints.AbsolutePositionConstraint;
 import Gui.Constraints.AspectConstraint;
 import Gui.Constraints.ScaleConstraint;
 import Gui.Layouts.SpellProgrammingMenu;
+import VecMath.Vector2f;
 
 public class GuiSpellConnector {
 
@@ -105,8 +103,8 @@ public class GuiSpellConnector {
 		float midY = (p1.y + p2.y) / 2f; 
 		
 		// Segment 1 -------------------------------------------------------
-		float s1Width = (p1.x - midX) / (float)Display.getWidth();
-		float s1Aspect = ((float)width / (float)Display.getHeight()) / s1Width;
+		float s1Width = (p1.x - midX) / (float)DisplayManager.WIDTH;
+		float s1Aspect = ((float)width / (float)DisplayManager.HEIGHT) / s1Width;
 		
 		s1.addXPosConstraint(new AbsolutePositionConstraint((int)((p1.x + midX) / 2)));
 		s1.addYPosConstraint(new AbsolutePositionConstraint((int)(p1.y)));
@@ -114,8 +112,8 @@ public class GuiSpellConnector {
 		s1.addAspectConstraint(new AspectConstraint(DisplayManager.aspectRatio/s1Aspect));
 		
 		// Segment 2 -------------------------------------------------------
-		float s2Height = (p1.y - p2.y) / (float)Display.getHeight();
-		float s2Aspect = s2Height / ((float)width / (float)Display.getWidth());
+		float s2Height = (p1.y - p2.y) / (float)DisplayManager.HEIGHT;
+		float s2Aspect = s2Height / ((float)width / (float)DisplayManager.WIDTH);
 		
 		s2.addXPosConstraint(new AbsolutePositionConstraint((int)midX));
 		s2.addYPosConstraint(new AbsolutePositionConstraint((int)midY));
@@ -123,8 +121,8 @@ public class GuiSpellConnector {
 		s2.addAspectConstraint(new AspectConstraint(DisplayManager.aspectRatio/s2Aspect));
 		
 		// Segment 3 -------------------------------------------------------
-		float s3Width = (midX - p2.x) / (float)Display.getWidth();
-		float s3Aspect = ((float)width / (float)Display.getHeight()) / s3Width;
+		float s3Width = (midX - p2.x) / (float)DisplayManager.WIDTH;
+		float s3Aspect = ((float)width / (float)DisplayManager.HEIGHT) / s3Width;
 		
 		s3.addXPosConstraint(new AbsolutePositionConstraint((int)((p2.x + midX) / 2)));
 		s3.addYPosConstraint(new AbsolutePositionConstraint((int)(p2.y)));

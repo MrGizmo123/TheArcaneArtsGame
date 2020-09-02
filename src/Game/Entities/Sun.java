@@ -1,6 +1,6 @@
 package Game.Entities;
 
-import org.lwjgl.util.vector.Vector3f;
+import VecMath.Vector3f;
 
 public class Sun {
 

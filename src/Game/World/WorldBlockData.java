@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import Game.Game;
 import Game.Entities.Blocks.AnimatedBlock;
 import Game.Entities.Blocks.Block;
@@ -17,6 +14,8 @@ import Game.Models.ModelData;
 import Game.tools.GameResourcesAndSettings;
 import Game.tools.Maths;
 import Game.tools.utils.vec2;
+import VecMath.Vector2f;
+import VecMath.Vector3f;
 
 public class WorldBlockData {
 
