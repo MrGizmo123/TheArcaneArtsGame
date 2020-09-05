@@ -1,12 +1,12 @@
 package Game.tools;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.xml.sax.SAXParseException;
+import Game.Logging.Logger;
+import Game.Render.DisplayManager;
+import VecMath.Matrix4f;
 
 import Game.Entities.Camera;
+import VecMath.Vector2f;
+import VecMath.Vector3f;
 
 public class Maths {
 
@@ -21,7 +21,7 @@ public class Maths {
 		return matrix;
 	}
 	
-	public static Matrix4f createTransMatrix(Vector2f trans,Vector2f scale){
+	public static Matrix4f createTransMatrix(Vector2f trans, Vector2f scale){
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		Matrix4f.translate(trans, matrix, matrix);
@@ -48,18 +48,18 @@ public class Maths {
         return viewMatrix;
 	}
 	
-	public static Matrix4f createProjectionMatrix(float FAR,float NEAR){
+	public static Matrix4f createProjectionMatrix(float FAR, float NEAR){
 		Matrix4f projectionMatrix = new Matrix4f();
 		projectionMatrix.setIdentity();
-		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+		float aspectRatio = DisplayManager.aspectRatio;
 		
-		float size = 20;
+		float size = 15;
 		
-		float r = size;
-		float t = size / aspectRatio;
-		float l = -size;
-		float b = -size / aspectRatio;
-		
+		float r = size * aspectRatio;
+		float t = size;
+		float l = -size * aspectRatio;
+		float b = -size;
+
 		projectionMatrix.m00 = 2 / (r - l);
 		projectionMatrix.m11 = 2 / (t - b);
 		projectionMatrix.m22 = -2 / (FAR - NEAR);
@@ -92,9 +92,32 @@ public class Maths {
 	}
 	
 	public static Vector2f viewportToNDC(Vector2f viewport){
-		float NDCx = ((viewport.x / Display.getWidth()) * 2) - 1;
-		float NDCy = ((viewport.y / Display.getHeight()) * 2) - 1;
+		float NDCx = ((viewport.x / DisplayManager.WIDTH) * 2) - 1;
+		float NDCy = ((viewport.y / DisplayManager.HEIGHT) * 2) - 1;
 		return new Vector2f(NDCx,NDCy);
+	}
+
+	public static Vector2f normalisedToNDC(Vector2f normalised)
+	{
+		float NDCx = (normalised.x * 2) - 1;
+		float NDCy = (normalised.y * 2) - 1;
+		return new Vector2f(NDCx, NDCy);
+	}
+
+	public static Vector2f viewportToNormalised(Vector2f viewport)
+	{
+		float x = viewport.x / DisplayManager.WIDTH;
+		float y = viewport.y / DisplayManager.HEIGHT;
+
+		return new Vector2f(x,y);
+	}
+
+	public static Vector2f normalisedToViewport(Vector2f normalised)
+	{
+		float x = normalised.x * DisplayManager.WIDTH;
+		float y = normalised.y * DisplayManager.HEIGHT;
+
+		return new Vector2f(x, y);
 	}
 	
 	public static float distance(Vector2f a,Vector2f b){

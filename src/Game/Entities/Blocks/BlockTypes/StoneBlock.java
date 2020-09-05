@@ -1,6 +1,6 @@
 package Game.Entities.Blocks.BlockTypes;
 
-import org.lwjgl.util.vector.Vector3f;
+import VecMath.Vector3f;
 
 import Game.Entities.Blocks.Block;
 

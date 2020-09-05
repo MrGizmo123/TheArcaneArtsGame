@@ -1,8 +1,8 @@
 package Game.Render.Shaders;
 
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.util.vector.Matrix4f;
 
 public class GuiShader extends ShaderProgram{
 
@@ -14,6 +14,7 @@ public class GuiShader extends ShaderProgram{
 	private int location_transMatrix;
 	private int location_aspectRatio;
 	private int location_isSelected;
+	private int location_displayAspectRatio;
 	
 	public GuiShader() {
 		super(VERTEX, FRAGMENT);
@@ -32,8 +33,14 @@ public class GuiShader extends ShaderProgram{
 		location_transMatrix = super.uniformLocation("transMatrix");
 		location_aspectRatio = super.uniformLocation("aspectRatio");
 		location_isSelected = super.uniformLocation("isSelected");
+		location_displayAspectRatio = super.uniformLocation("displayAspectRatio");
 	}
-	
+
+	public void loadDisplayAspectRatio(float aspect)
+	{
+		super.loadFloat(location_displayAspectRatio, aspect);
+	}
+
 	public void isSelected(boolean isSelected)
 	{
 		super.loadBoolean(location_isSelected, isSelected);

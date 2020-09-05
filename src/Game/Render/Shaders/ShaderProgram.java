@@ -6,14 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
+import VecMath.Matrix4f;
+import VecMath.Vector2f;
+import VecMath.Vector3f;
+import VecMath.Vector4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
  
 public abstract class ShaderProgram {
      
@@ -101,14 +101,14 @@ public abstract class ShaderProgram {
 	        GL20.glUniform1f(location, value ? 1f : 0f);
 	    }
 	    
-	    protected void loadVector(int location,Vector2f vector){
+	    protected void loadVector(int location, Vector2f vector){
 	    	GL20.glUniform2f(location, vector.x, vector.y);
 	    }
 	     
 	    protected void loadMatrix(int location, Matrix4f matrix){
 	        matrix.store(matrixBuffer);
 	        matrixBuffer.flip();
-	        GL20.glUniformMatrix4(location, false, matrixBuffer);
+	        GL20.glUniformMatrix4fv(location, false, matrixBuffer);
 	    }
 	     
 	    private static int loadShader(String file, int type){

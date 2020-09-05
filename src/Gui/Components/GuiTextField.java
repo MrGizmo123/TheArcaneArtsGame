@@ -1,21 +1,19 @@
 package Gui.Components;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-
+import Game.Render.DisplayManager;
 import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
 import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.TextRendering.Text;
+import VecMath.Vector2f;
 
 public class GuiTextField extends Gui{
 
 	private Text text;
 	
-	public GuiTextField(float textSize, boolean centered, GuiLayout parentLayout) {
-		super(GameResourcesAndSettings.GUI_DARK_GREY, parentLayout);
+	public GuiTextField(float textSize, boolean centered, Gui parent) {
+		super(GameResourcesAndSettings.GUI_DARK_GREY, parent);
 		
 		Vector2f viewport = super.getPositionInViewPort();
 		
@@ -27,6 +25,7 @@ public class GuiTextField extends Gui{
 	@Override
 	protected void constraintsUpdated()
 	{
+		super.constraintsUpdated();
 		Vector2f viewport = super.getPositionInViewPort();
 		
 		text.changePos(viewport);
@@ -48,7 +47,7 @@ public class GuiTextField extends Gui{
 				   		continue;
 				   	}
 				    	
-				   	char c = Keyboard.getEventCharacter();
+				   	char c = 0;
 				    	
 				   	if(((int)c) == 0)
 				    {
@@ -69,7 +68,7 @@ public class GuiTextField extends Gui{
 	{
 		Vector2f viewport = super.getPositionInViewPort();
 		
-		text.changePos(new Vector2f(viewport.x, viewport.y + ((float)GameResourcesAndSettings.GAME_FONT.getMaxHeight() * text.getSize() * Display.getHeight() / Display.getWidth())));
+		text.changePos(new Vector2f(viewport.x, viewport.y + ((float)GameResourcesAndSettings.GAME_FONT.getMaxHeight() * text.getSize() * DisplayManager.HEIGHT / DisplayManager.WIDTH)));
 	}
 	
 }

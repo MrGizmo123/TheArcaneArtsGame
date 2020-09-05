@@ -3,12 +3,11 @@ package Game.World;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import Game.Entities.Entity;
 import Game.Entities.Player;
 import Game.Entities.Sun;
 import Game.Entities.Terrain;
+import VecMath.Vector3f;
 
 public class World {
 

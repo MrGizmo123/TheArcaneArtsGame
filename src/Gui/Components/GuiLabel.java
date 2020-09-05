@@ -1,23 +1,22 @@
 package Gui.Components;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.tools.GameResourcesAndSettings;
 import Gui.Gui;
 import Gui.GuiLayout;
 import Gui.TextRendering.Text;
+import VecMath.Vector2f;
 
 public class GuiLabel extends Gui{
 
 	private Text text;
 	
-	public GuiLabel(String text, float size, GuiLayout parentLayout)
+	public GuiLabel(String text, float size, Gui parent)
 	{
-		super(GameResourcesAndSettings.GUI_TRANSPARENT, parentLayout);
+		super(GameResourcesAndSettings.GUI_TRANSPARENT, parent);
 		
 		Vector2f viewport = super.getPositionInViewPort();
 		
-		this.text = new Text(text, size, GameResourcesAndSettings.GAME_FONT, viewport, true);
+		this.text = new Text(text, size, GameResourcesAndSettings.GAME_FONT, super.getPositionInNDC(), true);
 	
 		super.addText(this.text);
 	}
@@ -25,9 +24,10 @@ public class GuiLabel extends Gui{
 	@Override
 	protected void constraintsUpdated()
 	{
-		Vector2f viewport = super.getPositionInViewPort();
+		super.constraintsUpdated();
+		Vector2f normalised = super.getCoordinates();
 		
-		text.changePos(viewport);
+		text.changePos(normalised);
 	}
 	
 }

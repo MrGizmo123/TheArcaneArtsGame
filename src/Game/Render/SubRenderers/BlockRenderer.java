@@ -1,19 +1,16 @@
 package Game.Render.SubRenderers;
 
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
-import org.lwjgl.util.vector.Matrix4f;
 
 import Game.Entities.Camera;
 import Game.Entities.Sun;
 import Game.Models.Model;
-import Game.Models.ModelData;
-import Game.Models.OBJLoader;
 import Game.Render.Shaders.BlockShader;
 import Game.tools.GameResourcesAndSettings;
-import Game.tools.Loader;
 import Game.tools.Maths;
 
 public class BlockRenderer {
@@ -22,6 +19,13 @@ public class BlockRenderer {
 	
 	public BlockRenderer(Matrix4f projMatrix) {
 		shader = new BlockShader();
+		shader.start();
+		shader.loadProjMatrix(projMatrix);
+		shader.stop();
+	}
+
+	public void updateProjectionMatrix(Matrix4f projMatrix)
+	{
 		shader.start();
 		shader.loadProjMatrix(projMatrix);
 		shader.stop();

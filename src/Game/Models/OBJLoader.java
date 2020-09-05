@@ -1,17 +1,16 @@
 package Game.Models;
 
+import VecMath.Vector2f;
+import VecMath.Vector3f;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
  
 public class OBJLoader {
      
@@ -56,7 +55,7 @@ public class OBJLoader {
                     break;
                 }
             }
-            System.out.println(vertices.size());
+
             while (line != null && line.startsWith("f ")) {
                 String[] currentLine = line.split(" ");
                 String[] vertex1 = currentLine[1].split("/");
@@ -71,9 +70,9 @@ public class OBJLoader {
         } catch (IOException e) {
             System.err.println("Error reading the file");
         }
-        //System.out.println(vertices.size());
+
         removeUnusedVertices(vertices);
-        System.out.println(vertices.size());
+
         float[] verticesArray = new float[vertices.size() * 3];
         float[] texturesArray = new float[vertices.size() * 2];
         float[] normalsArray = new float[vertices.size() * 3];

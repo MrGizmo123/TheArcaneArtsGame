@@ -1,6 +1,6 @@
 package Gui.TextRendering;
 
-import org.lwjgl.util.vector.Vector2f;
+import VecMath.Vector2f;
 
 import Game.tools.Maths;
 
@@ -11,6 +11,7 @@ public class Text {
 	private TextMeshData mesh;
 	private Font font;
 	private float size;
+	private float height;
 	
 	private Vector2f pos;
 	
@@ -37,7 +38,7 @@ public class Text {
 	
 	public Vector2f getPosNDC()
 	{
-		return Maths.viewportToNDC(pos);
+		return Maths.normalisedToNDC(pos);
 	}
 	
 	public void append(String extra)

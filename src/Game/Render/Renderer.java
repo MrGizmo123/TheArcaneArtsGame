@@ -2,8 +2,8 @@ package Game.Render;
 
 import java.util.List;
 
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
 
 import Game.Entities.Camera;
 import Game.Entities.Entity;
@@ -36,6 +36,11 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
+
+		Matrix4f projMatrix = Maths.createProjectionMatrix(1000.0f, -1f);
+		blockRenderer.updateProjectionMatrix(projMatrix);
+		customBlockRenderer.updateProjectionMatrix(projMatrix);
+		entityRenderer.updateProjectionMatrix(projMatrix);
 	}
 	
 	public void renderStandardBlocks(Model blockModel, int noOfBlocks, Sun sun, Player player) {

@@ -3,18 +3,16 @@ package Gui.TextRendering;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-
 import Game.Game;
-import Game.tools.GameResourcesAndSettings;
-import Game.tools.Maths;
+import Game.Render.DisplayManager;
+import VecMath.Vector2f;
 
 public class TextMeshData {
 	
 	private Vector2f cursor;
 	private Font font;
 	private float size;
+	private float height;
 	
 	private boolean isCentered;
 	
@@ -33,9 +31,8 @@ public class TextMeshData {
 		this.isCentered = centered;
 		this.size = size;
 		this.font = f;
-		this.cursor = new Vector2f(0, Display.getHeight() / size);
-		
-		//cursor.y+=(GameResourcesAndSettings.LINE_HEIGHT * size * Display.getHeight());
+		this.cursor = new Vector2f(0, 0);
+		this.height = 0;
 		
 		vertexPositions = new ArrayList<Float>();
 		textureCoords = new ArrayList<Float>();
@@ -43,6 +40,7 @@ public class TextMeshData {
 		charIds = toCharList(text.toCharArray());
 		
 		generateQuads(text);
+		calculateHeight();
 		
 		float[] vertices = toFloatArray(vertexPositions);
 		float[] texCoords = toFloatArray(textureCoords);
@@ -57,6 +55,25 @@ public class TextMeshData {
 		Game.loader.addAttrib(vaoID, vertexVbo, 0, 3);
 		Game.loader.addAttrib(vaoID, texCoordVbo, 1, 2);
 		
+	}
+
+	private void calculateHeight()
+	{
+		float lowest = vertexPositions.get(1);
+		float highest = vertexPositions.get(1);
+		for(int i=1;i<=vertexPositions.size();i+=3)
+		{
+			if(vertexPositions.get(i) > highest)
+			{
+				highest = vertexPositions.get(i);
+			}
+			else if(vertexPositions.get(i) < lowest)
+			{
+				lowest = vertexPositions.get(i);
+			}
+		}
+
+		height = highest - lowest;
 	}
 	
 	public void newline()
@@ -81,7 +98,7 @@ public class TextMeshData {
 	{
 		charIds.add(extra);
 		
-		shiftX((float)font.getCharacterXAdvance(extra)/((float)Display.getWidth()) * size);
+		shiftX((float)font.getCharacterXAdvance(extra)/((float) DisplayManager.WIDTH) * size);
 		cursor.x-=((float)font.getCharacterXAdvance(extra) / 2f);
 		generateQuad(extra);
 		
@@ -108,7 +125,7 @@ public class TextMeshData {
 		
 		vertexCount-=6;
 		
-		shiftX(-(float)font.getCharacterXAdvance(charIds.get(index))/((float)Display.getWidth()) * size);
+		shiftX(-(float)font.getCharacterXAdvance(charIds.get(index))/((float)DisplayManager.WIDTH) * size);
 		cursor.x-=(font.getCharacterXAdvance(charIds.get(index)) / 2f);
 		
 		charIds.remove(index);
@@ -118,7 +135,7 @@ public class TextMeshData {
 	
 	public void updateMesh(String text, float size, Font f)
 	{
-		this.cursor = new Vector2f(50, Display.getHeight() / size);
+		this.cursor = new Vector2f(0, 0);
 		
 		vertexPositions = new ArrayList<Float>();
 		textureCoords = new ArrayList<Float>();
@@ -142,7 +159,7 @@ public class TextMeshData {
 		bottomLeft.y*=size;
 		topRight.x*=size;
 		topRight.y*=size;
-		
+
 		Vector2f p1 = new Vector2f(bottomLeft.x, bottomLeft.y);
 		Vector2f p2 = new Vector2f(topRight.x, bottomLeft.y);
 		Vector2f p3 = new Vector2f(bottomLeft.x, topRight.y);
@@ -204,6 +221,11 @@ public class TextMeshData {
 		
 		Game.loader.updateVbof(vertexVbo, vertices);
 		Game.loader.updateVbof(texCoordVbo, texCoords);
+	}
+
+	public float getHeight()
+	{
+		return height;
 	}
 	
 	public int getVertexCount()
@@ -274,10 +296,8 @@ public class TextMeshData {
 	
 	private void addVertex(Vector2f vertex)
 	{
-		Vector2f ndc = Maths.viewportToNDC(vertex);
-		
-		vertexPositions.add(ndc.x);
-		vertexPositions.add(ndc.y);
+		vertexPositions.add(vertex.x / 1000);
+		vertexPositions.add(vertex.y / 1000);
 		vertexPositions.add(0f);
 	}
 	

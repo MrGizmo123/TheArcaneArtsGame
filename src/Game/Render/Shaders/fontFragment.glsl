@@ -15,5 +15,5 @@ void main(void)
 		discard;
 	}
 
-	out_Color = vec4(0,1,0,1);
+	out_Color = vec4(0,0,0,1);
 }

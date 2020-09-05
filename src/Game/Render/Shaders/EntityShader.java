@@ -1,8 +1,8 @@
 package Game.Render.Shaders;
 
+import VecMath.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.util.vector.Matrix4f;
 
 public class EntityShader extends ShaderProgram {
 

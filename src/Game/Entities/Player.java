@@ -1,8 +1,7 @@
 package Game.Entities;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
+import VecMath.Vector2f;
+import VecMath.Vector3f;
 
 import Game.Game;
 import Game.Models.TexturedModel;
