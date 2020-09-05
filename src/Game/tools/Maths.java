@@ -53,15 +53,13 @@ public class Maths {
 		projectionMatrix.setIdentity();
 		float aspectRatio = DisplayManager.aspectRatio;
 		
-		float size = 40;
+		float size = 15;
 		
 		float r = size * aspectRatio;
 		float t = size;
 		float l = -size * aspectRatio;
 		float b = -size;
 
-
-		
 		projectionMatrix.m00 = 2 / (r - l);
 		projectionMatrix.m11 = 2 / (t - b);
 		projectionMatrix.m22 = -2 / (FAR - NEAR);

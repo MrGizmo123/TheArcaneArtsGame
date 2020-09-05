@@ -1,13 +1,9 @@
 package Gui;
 
-import java.util.List;
-
 import Game.Game;
 
 import Gui.Layouts.MainMenu;
 import Gui.Layouts.PlayingMenu;
-import Gui.Layouts.SpellProgrammingMenu;
-import Gui.TextRendering.Text;
 
 public class GuiManager {
 
@@ -15,13 +11,11 @@ public class GuiManager {
 	
 	private static MainMenu mainMenu;
 	private static PlayingMenu playingMenu;
-	private static SpellProgrammingMenu spellMenu;
 	
 	public static void init()
 	{
 		mainMenu = new MainMenu();
 		playingMenu = new PlayingMenu();
-		spellMenu = new SpellProgrammingMenu();
 		
 		activeLayout = mainMenu;
 		Game.freezeGameInput();
@@ -38,12 +32,6 @@ public class GuiManager {
 	{
 		activeLayout = playingMenu;
 		Game.unFreezeGameInput();
-	}
-	
-	public static void loadSpellEditMenu()
-	{
-		activeLayout = spellMenu;
-		Game.freezeGameInput();
 	}
 	
 	public static void loadMainMenu()

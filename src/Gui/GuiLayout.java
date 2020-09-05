@@ -2,9 +2,6 @@ package Gui;
 
 import java.util.*;
 
-import Gui.Components.SpellEditor.GuiSpellNodeSelector;
-import Gui.TextRendering.Text;
-
 public abstract class GuiLayout {
 
 	private List<Gui> guis;

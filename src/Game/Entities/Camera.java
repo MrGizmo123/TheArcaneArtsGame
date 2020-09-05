@@ -4,7 +4,7 @@ import Game.tools.Input;
 import VecMath.Vector3f;
 
 import Game.Game;
-import Game.World.GameTickUpdater;
+import Game.tools.GameTickUpdater;
 
 public class Camera {
 

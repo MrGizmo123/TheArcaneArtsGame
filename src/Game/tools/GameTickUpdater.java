@@ -1,4 +1,4 @@
-package Game.World;
+package Game.tools;
 
 public class GameTickUpdater {
 

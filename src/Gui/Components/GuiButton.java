@@ -7,7 +7,7 @@ import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
 import Game.tools.utils.AABB;
 import Gui.Gui;
-import Gui.GuiLayout;
+
 import Gui.TextRendering.Text;
 import VecMath.Vector2f;
 
@@ -105,6 +105,7 @@ public class GuiButton extends Gui {
 	@Override
 	protected void constraintsUpdated() 
 	{
+		super.constraintsUpdated();
 		positionText();
 		recalculateAABB();
 	}
@@ -171,15 +172,15 @@ public class GuiButton extends Gui {
 	@Override
 	public void show()
 	{
-		this.parent.addGui(this);
-		this.addText(text);
+		super.show();
+		//this.addText(text);
 	}
 	
 	@Override
 	public void hide()
 	{
-		this.parent.removeGui(this);
-		this.removeText(text);
+		super.hide();
+		//this.removeText(text);
 	}
 
 	public void clicked() {

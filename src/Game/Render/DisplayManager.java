@@ -1,6 +1,7 @@
 package Game.Render;
 
 
+import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
 import com.sun.source.tree.WildcardTree;
 import org.lwjgl.*;
@@ -8,6 +9,11 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -144,5 +150,5 @@ public class DisplayManager {
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 	}
-	
+
 }

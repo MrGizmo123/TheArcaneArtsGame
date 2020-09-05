@@ -33,8 +33,8 @@ public class Input {
 	
 	public static void init()
 	{
-		keysPressed = new boolean[256];
-		keysReleased = new boolean[256];
+		keysPressed = new boolean[512];
+		keysReleased = new boolean[512];
 		mousePressed = new boolean[3];
 		mouseReleased = new boolean[3];
 		mouseButtonStatus = new boolean[3];
@@ -157,12 +157,12 @@ public class Input {
 		return Maths.viewportToNormalised(new Vector2f(mouseX, mouseY));
 	}
 	
-	public static boolean isKeyPressed(char key)
+	public static boolean isKeyPressed(int key)
 	{
 		return keysPressed[key];
 	}
 	
-	public static boolean isKeyReleased(char key)
+	public static boolean isKeyReleased(int key)
 	{
 		return keysReleased[key];
 	}
@@ -204,7 +204,7 @@ public class Input {
 
 	private static void clearArrays()
 	{
-		for(int i=0;i<256;i++)
+		for(int i=0;i<512;i++)
 		{
 			keysPressed[i] = false;
 			keysReleased[i] = false;

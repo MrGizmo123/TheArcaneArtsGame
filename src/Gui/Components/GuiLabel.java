@@ -24,6 +24,7 @@ public class GuiLabel extends Gui{
 	@Override
 	protected void constraintsUpdated()
 	{
+		super.constraintsUpdated();
 		Vector2f normalised = super.getCoordinates();
 		
 		text.changePos(normalised);

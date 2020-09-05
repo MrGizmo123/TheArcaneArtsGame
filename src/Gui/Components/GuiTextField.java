@@ -25,6 +25,7 @@ public class GuiTextField extends Gui{
 	@Override
 	protected void constraintsUpdated()
 	{
+		super.constraintsUpdated();
 		Vector2f viewport = super.getPositionInViewPort();
 		
 		text.changePos(viewport);

@@ -5,6 +5,7 @@ import Game.tools.GameResourcesAndSettings;
 import Game.tools.Input;
 import Gui.Gui;
 import Gui.GuiManager;
+import org.lwjgl.glfw.GLFW;
 
 public class PlayingMenu extends Gui{
 
@@ -16,12 +17,7 @@ public class PlayingMenu extends Gui{
 	@Override
 	public void update()
 	{
-		if(Input.isKeyPressed('e'))
-		{
-			GuiManager.loadSpellEditMenu();
-		}
-		
-		if(Input.isKeyPressed('q'))
+		if(Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE))
 		{
 			GuiManager.loadMainMenu();
 		}

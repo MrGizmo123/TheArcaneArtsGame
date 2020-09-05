@@ -91,10 +91,11 @@ public class GuiRenderer {
 
 		calculateAndLoadProjectionMatrix();
 
-		renderGui(root);
-		for(Gui g : root.getChildren())
-		{
-			renderGuisRecursive(g);
+		if(root.isVisible()) {
+			renderGui(root);
+			for (Gui g : root.getChildren()) {
+				renderGuisRecursive(g);
+			}
 		}
 
 		shader.stop();

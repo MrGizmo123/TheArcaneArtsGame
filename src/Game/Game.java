@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import Game.Render.DisplayManager;
 import Game.Render.Renderer;
 import Game.Render.SubRenderers.GuiRenderer;
-import Game.World.GameTickUpdater;
+import Game.tools.GameTickUpdater;
 import Game.World.World;
 import Game.tools.Input;
 import Game.tools.Loader;

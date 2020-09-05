@@ -1,15 +1,18 @@
 package Gui;
 
+import Game.Logging.Logger;
 import Game.Render.DisplayManager;
+import Game.tools.Callback;
+import Gui.Constraints.*;
+import Gui.Constraints.Properties.FocusMode;
+import Gui.Constraints.Properties.Focusable;
+import Gui.Constraints.Properties.FocusableDontShowStatus;
 import Gui.TextRendering.Text;
 
 import Game.tools.Input;
 import Game.tools.Maths;
 import Game.tools.utils.AABB;
-import Gui.Constraints.AspectConstraint;
-import Gui.Constraints.CenterConstraint;
-import Gui.Constraints.PositionConstraint;
-import Gui.Constraints.ScaleConstraint;
+import Gui.Transitions.Transition;
 import VecMath.Matrix4f;
 import VecMath.Vector2f;
 
@@ -18,48 +21,87 @@ import java.util.List;
 
 public class Gui {
 
-	private PositionConstraint xConstraint;
-	private PositionConstraint yConstraint;
+	private PositioningConstraint posConstraint;
 	
-	private ScaleConstraint scaleConstraint;
-	private AspectConstraint aspectConstraint;
+	private ScalingConstraint scaleConstraint;
 	
 	protected int texture;
 	protected Gui parent;
 	protected List<Gui> children;
 	
 	private AABB boundingBox;
-	private boolean hasFocus;
 
 	private List<Text> texts;
 
-	private boolean isFocusable;
-	private boolean showFocusStatus;
+	private FocusMode focusMode;
 
 	private Matrix4f transform;
+
+	private Transition showTransition;
+	private Transition hideTransition;
+
+	private Transition currentTransition; // the currently running transition
+
+	private boolean isVisible;
 
 	// default settings
 	public Gui(int texture, Gui parent)
 	{
 		this.texture = texture;
-		this.xConstraint = new CenterConstraint();
-		this.yConstraint = new CenterConstraint();
 		
-		this.scaleConstraint = new ScaleConstraint(0.5f,ScaleConstraint.WIDTH);
-		this.aspectConstraint = new AspectConstraint(1);
+		this.scaleConstraint = new RelativeScaleConstraint(0.5f,0.5f);
+		this.posConstraint = new RelativePosConstraint(0.5f,0.5f);
 		
 		this.parent = parent;
-		
+
+		this.focusMode = new FocusableDontShowStatus();
+
+		this.texts = new ArrayList<>();
+		this.children = new ArrayList<>();
+
+		this.showTransition = new Transition(1);
+		this.hideTransition = new Transition(1);
+
+		this.currentTransition = null;
+		this.isVisible = true;
+
 		recalculateAABB();
-		hasFocus = false;
-
-		isFocusable = true;
-		showFocusStatus = true;
-
-		texts = new ArrayList<>();
-		children = new ArrayList<>();
-
 		recalculateTransform();
+	}
+
+	public boolean isVisible()
+	{
+		return isVisible;
+	}
+
+	public void setShowTransition(Transition t)
+	{
+		this.showTransition = t;
+		this.showTransition.setStartedCallback(new Callback() {
+			@Override
+			public void invoke() {
+				showImmediate();
+			}
+		});
+
+		this.showTransition.setFinishedCallback(new Callback() {
+			@Override
+			public void invoke() {
+				currentTransition = null;
+			}
+		});
+	}
+
+	public void setHideTransition(Transition t)
+	{
+		this.hideTransition = t;
+		this.hideTransition.setFinishedCallback(new Callback() {
+			@Override
+			public void invoke() {
+				hideImmediate();
+				currentTransition = null;
+			}
+		});
 	}
 
 	public Matrix4f getTransform()
@@ -82,24 +124,14 @@ public class Gui {
         return children;
     }
 
-	public void setShowFocusStatus(boolean show)
-	{
-		this.showFocusStatus = show;
-	}
+	public void setFocusMode(FocusMode newMode)
+    {
+        this.focusMode = newMode;
+    }
 
 	public boolean isShowFocusStatus()
 	{
-		return showFocusStatus;
-	}
-
-	public void setFocusable(boolean focusable)
-	{
-		this.isFocusable = focusable;
-	}
-
-	public boolean isFocusable()
-	{
-		return isFocusable;
+		return focusMode.showFocusStatus();
 	}
 
 	protected void addText(Text t)
@@ -114,7 +146,10 @@ public class Gui {
 
 	public List<Text> getTexts()
 	{
-		return texts;
+		if(isVisible)
+			return texts;
+
+		return new ArrayList<>();
 	}
 
 	//update function (some subclases might need this)
@@ -129,35 +164,53 @@ public class Gui {
 		{
 			windowResized();
 		}
+
+		handleTransitions();
+	}
+
+	private void handleTransitions()
+	{
+		if(currentTransition != null) {
+			currentTransition.update();
+
+			posConstraint.moveX(currentTransition.getDX());
+			posConstraint.moveY(currentTransition.getDY());
+
+			scaleConstraint.setWidth(scaleConstraint.getWidth() * currentTransition.getScaleX());
+			scaleConstraint.setHeight(scaleConstraint.getHeight() * currentTransition.getScaleY());
+
+			recalculateTransform();
+			recalculateAABB();
+		}
 	}
 	
 	public boolean hasFocus()
 	{
-		return hasFocus;
+		return focusMode.hasFocus();
 	}
 	
 	public void loseFocus()
 	{
-		if(isFocusable) {
-			hasFocus = false;
+		if(focusMode instanceof Focusable) {
+            focusMode.loseFocus();
 			focusLost();
 		}
 	}
 	
 	public void setFocus()
 	{
-		if(isFocusable) {
-			hasFocus = true;
+		if(focusMode instanceof Focusable) {
+			focusMode.setFocus();
 			focusGained();
 		}
 	}
 	
 	public boolean checkFocus()
 	{
-		if(isFocusable) {
+		if(focusMode instanceof Focusable) {
 			Vector2f mousePos = Input.getMousePosition();
 			if (Input.isMouseButtonPressed(0)) {
-				if (boundingBox.isIntersecting(mousePos) && !hasFocus) {
+				if (boundingBox.isIntersecting(mousePos) && !focusMode.hasFocus()) {
 					setFocus();
 					return true;
 				} else {
@@ -181,12 +234,12 @@ public class Gui {
 	
 	public boolean isKeyPressed(char key)
 	{
-		return (Input.isKeyPressed(key) && hasFocus);
+		return (Input.isKeyPressed(key) && focusMode.hasFocus());
 	}
 	
 	public boolean isKeyReleased(char key)
 	{
-		return (Input.isKeyReleased(key) && hasFocus);
+		return (Input.isKeyReleased(key) && focusMode.hasFocus());
 	}
 	
 	private void recalculateAABB()
@@ -196,6 +249,7 @@ public class Gui {
 	
 	private AABB calculateAABB() 
 	{
+
 		Vector2f scale = this.getScale();
 		Vector2f pos = this.getPositionInViewPort();
 		
@@ -215,9 +269,11 @@ public class Gui {
 	//callback for when position constraints are updated
 	protected void constraintsUpdated()
 	{
-		
+		recalculateAABB();
+		recalculateTransform();
 	}
 
+	// callback
 	protected void windowResized()
 	{
 
@@ -225,54 +281,44 @@ public class Gui {
 	
 	public void show()
 	{
-		this.parent.addGui(this);
+		this.currentTransition = showTransition;
+		currentTransition.start();
+	}
+
+	public void showImmediate()
+	{
+		isVisible = true;
 	}
 	
 	public void hide()
 	{
-		this.parent.removeGui(this);
+		this.currentTransition = hideTransition;
+		currentTransition.start();
+	}
+
+	public void hideImmediate()
+	{
+		isVisible = false;
 	}
 	
 	// self explanatory
 	
-	public void addXPosConstraint(PositionConstraint c)
+	public void addPosConstraint(PositioningConstraint constraint)
 	{
-		this.xConstraint = c;
+		this.posConstraint = constraint;
 		constraintsUpdated();
-		recalculateAABB();
-		recalculateTransform();
 	}
 	
-	public void addYPosConstraint(PositionConstraint c)
-	{
-		this.yConstraint = c;
-		constraintsUpdated();
-		recalculateAABB();
-		recalculateTransform();
-
-	}
-	
-	public void addScaleConstraint(ScaleConstraint c)
+	public void addScaleConstraint(ScalingConstraint c)
 	{
 		this.scaleConstraint = c;
 		constraintsUpdated();
-		recalculateAABB();
-		recalculateTransform();
-	}
-	
-	public void addAspectConstraint(AspectConstraint c)
-	{
-		this.aspectConstraint = c;
-		constraintsUpdated();
-		recalculateAABB();
-		recalculateTransform();
 	}
 
 	public void recalculateTransform()
 	{
 		if(parent != null)
 		{
-
 			Matrix4f selfTransform = Maths.createTransMatrix(this.getPositionInNDC(), this.getScale());
 			transform = Matrix4f.mul(parent.getTransform(), selfTransform, transform);
 		}
@@ -296,16 +342,13 @@ public class Gui {
 	
 	public float getAspect()
 	{
-		return aspectConstraint.getAspectRatio();
+		return scaleConstraint.getWidth() / scaleConstraint.getHeight();
 	}
 	
 	// calculates and returns the position in Normalised Device Coordinates
 	public Vector2f getPositionInNDC()
 	{
-		float xPos = xConstraint.getPos();
-		float yPos = yConstraint.getPos();
-		
-		Vector2f ndc = Maths.viewportToNDC(Maths.normalisedToViewport(new Vector2f(xPos, yPos)));
+		Vector2f ndc = Maths.normalisedToNDC(getCoordinates());
 		return ndc;
 	}
 
@@ -315,10 +358,7 @@ public class Gui {
 	// calculates and returns the position in Viewport coords
 	public Vector2f getPositionInViewPort()
 	{
-		float xPos = xConstraint.getPos();
-		float yPos = yConstraint.getPos();
-		
-		Vector2f result = Maths.normalisedToViewport(new Vector2f(xPos, yPos));
+		Vector2f result = Maths.normalisedToViewport(getCoordinates());
 		return result;
 	}
 
@@ -328,66 +368,13 @@ public class Gui {
 	 */
 	public Vector2f getCoordinates()
 	{
-		return new Vector2f(xConstraint.getPos(), yConstraint.getPos());
+		return posConstraint.getPos();
 	}
 	
 	// calculates the scale according to axes and aspect ratio and returns it
 	public Vector2f getScale()
 	{
-		float xScale;
-		float yScale;
-		
-		float scale = scaleConstraint.getScale();
-		
-		if(scaleConstraint.getAxis() == ScaleConstraint.WIDTH)
-		{
-			xScale = scale;
-			yScale = aspectConstraint.getHeightFromWidth(xScale);
-		}
-		else
-		{
-			yScale = scale;
-			xScale = aspectConstraint.getWidthFromHeight(yScale);
-		}
-		
-		return new Vector2f(xScale, yScale);
-		
-	}
-	
-	public int getWidth()
-	{
-		int width;
-		
-		float scale = scaleConstraint.getScale();
-		
-		if(scaleConstraint.getAxis() == ScaleConstraint.WIDTH)
-		{
-			width = (int) (scale * DisplayManager.WIDTH);
-		}
-		else
-		{
-			width = (int) (aspectConstraint.getWidthFromHeight(scale) * DisplayManager.WIDTH);
-		}
-		
-		return width;
-	}
-	
-	public int getHeight()
-	{
-		int height;
-		
-		float scale = scaleConstraint.getScale();
-		
-		if(scaleConstraint.getAxis() == ScaleConstraint.WIDTH)
-		{
-			height = (int) (aspectConstraint.getHeightFromWidth(scale) * DisplayManager.HEIGHT);
-		}
-		else
-		{
-			height = (int) (scale * DisplayManager.HEIGHT);
-		}
-		
-		return height;
+		return new Vector2f(scaleConstraint.getWidth(), scaleConstraint.getHeight());
 	}
 	
 }

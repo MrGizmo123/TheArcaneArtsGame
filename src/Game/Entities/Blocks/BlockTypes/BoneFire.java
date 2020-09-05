@@ -6,7 +6,7 @@ import Game.Entities.Blocks.AnimatedBlock;
 import Game.Entities.Blocks.Block;
 import Game.Entities.Blocks.CustomModelBlock;
 import Game.Models.TexturedModel;
-import Game.World.GameTickUpdater;
+import Game.tools.GameTickUpdater;
 import Game.tools.GameResourcesAndSettings;
 
 public class BoneFire extends Block implements CustomModelBlock, AnimatedBlock{
